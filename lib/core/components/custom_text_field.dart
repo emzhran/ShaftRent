@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final int maxLines;
   final Color? labelColor;
+  final Color? textColor;
 
   const CustomTextField({
     super.key,
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.labelColor,
     required this.validator,
+    this.textColor,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomTextField extends StatelessWidget {
           const SpaceHeight(12.0),
         ],
         TextFormField(
+          style: TextStyle(color: textColor ?? Colors.white),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (vl) {
             if (vl == null || vl.isEmpty) {
@@ -73,7 +76,6 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.0),
               borderSide: const BorderSide(color: Colors.white),
             ),
-            hintText: label,
           ),
         ),
       ],
