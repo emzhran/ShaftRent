@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shaft_rent_app/core/components/spaces.dart';
+import 'package:shaft_rent_app/core/constants/colors.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -33,6 +35,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: AppColors.primary,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _key,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SpaceHeight(100),
+                Image.asset(
+                  'assets/images/shaft.png',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  'DAFTAR AKUN BARU',
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                    color: AppColors.white
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
