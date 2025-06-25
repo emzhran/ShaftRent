@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shaft_rent_app/core/components/components.dart';
 import 'package:shaft_rent_app/core/components/spaces.dart';
 import 'package:shaft_rent_app/core/constants/colors.dart';
 
@@ -60,6 +61,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     color: AppColors.white
                   ),
                 ),
+                const SpaceHeight(30),
+                CustomTextField(
+                  controller: namaController, 
+                  label: 'Nama',
+                  showLabel: false, 
+                  validator: 'Nama tidak boleh kosong',
+                  keyboardType: TextInputType.text,
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.person, color: AppColors.white),
+                    ),
+                  ),
               ],
             ),
           ),
