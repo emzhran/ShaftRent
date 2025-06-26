@@ -3,7 +3,7 @@ import 'dart:convert';
 class GetAllCarModel {
   final String message;
   final int statusCode;
-  final List<GetCar> data;
+  final List<Car> data;
 
   GetAllCarModel({
     required this.message,
@@ -14,7 +14,7 @@ class GetAllCarModel {
   GetAllCarModel copyWith({
     String? message,
     int? statusCode,
-    List<GetCar>? data,
+    List<Car>? data,
   }) =>GetAllCarModel(
     message: message ?? this.message,
     statusCode: statusCode ?? this.statusCode,
@@ -29,7 +29,7 @@ class GetAllCarModel {
   factory GetAllCarModel.fromJson(Map<String, dynamic> json) => GetAllCarModel(
     message: json['message'], 
     statusCode: json['status_code'],
-    data: List<GetCar>.from(json['data'].map((x) => GetCar.fromJson(x))),
+    data: List<Car>.from(json['data'].map((x) => Car.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -42,7 +42,7 @@ class GetAllCarModel {
 class GetCarById {
   final String message;
   final int statusCode;
-  final GetCar data;
+  final Car data;
 
   GetCarById({
     required this.message,
@@ -50,7 +50,7 @@ class GetCarById {
     required this.data,
   });
 
-  GetCarById copyWith({String? message, int? statusCode, GetCar? data}) =>
+  GetCarById copyWith({String? message, int? statusCode, Car? data}) =>
     GetCarById(
       message: message ?? this.message,
       statusCode: statusCode ?? this.statusCode,
@@ -65,7 +65,7 @@ class GetCarById {
   factory GetCarById.fromJson(Map<String, dynamic> json) => GetCarById(
     message: json['message'],
     statusCode: json['status_code'],
-    data: GetCar.fromJson(json['data']),
+    data: Car.fromJson(json['data']),
   );
 
   Map<String, dynamic> toJson() => {
@@ -75,7 +75,7 @@ class GetCarById {
   };
 }
 
-class GetCar {
+class Car {
   final int id;
   final String merkMobil;
   final String namaMobil;
@@ -85,7 +85,7 @@ class GetCar {
   final String transmisi;
   final String? fotoMobil;
 
-  GetCar({
+  Car({
     required this.id,
     required this.merkMobil,
     required this.namaMobil,
@@ -96,7 +96,7 @@ class GetCar {
     this.fotoMobil,
   });
 
-  GetCar copyWith({
+  Car copyWith({
     int? id,
     String? merkMobil,
     String? namaMobil,
@@ -105,7 +105,7 @@ class GetCar {
     int? jumlahKursi,
     String? transmisi,
     String? fotoMobil,
-  }) =>GetCar(
+  }) =>Car(
     id: id ?? this.id,
     merkMobil: merkMobil ?? this.merkMobil,
     namaMobil: namaMobil ?? this.namaMobil,
@@ -116,11 +116,11 @@ class GetCar {
     fotoMobil: fotoMobil ?? this.fotoMobil,
   );
 
-  factory GetCar.fromRawJson(String str) => GetCar.fromJson(json.decode(str));
+  factory Car.fromRawJson(String str) => Car.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory GetCar.fromJson(Map<String, dynamic> json) => GetCar(
+  factory Car.fromJson(Map<String, dynamic> json) => Car(
     id: json['id'],
     merkMobil: json['merk_mobil'],
     namaMobil: json['nama_mobil'],
