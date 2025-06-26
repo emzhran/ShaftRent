@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shaft_rent_app/core/components/custom_text_field.dart';
 import 'package:shaft_rent_app/core/components/spaces.dart';
 import 'package:shaft_rent_app/core/constants/colors.dart';
 
@@ -49,6 +50,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 120,
                   height: 120,
                   fit: BoxFit.contain,
+                ),
+                const SpaceHeight(30),
+                CustomTextField(
+                  controller: emailController, 
+                  label: 'Email', 
+                  validator: 'Email tidak boleh kosong',
+                  showLabel: false,
+                  keyboardType: TextInputType.emailAddress,
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.email, color: AppColors.white),
+                  ),
                 ),
               ],
             ),
