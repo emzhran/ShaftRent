@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:shaft_rent_app/data/model/request/admin/car_request_model.dart';
+import 'package:shaft_rent_app/data/model/response/admin/car/add_car_response.dart';
+import 'package:shaft_rent_app/data/model/response/admin/car/delete_car_response.dart';
 import 'package:shaft_rent_app/data/model/response/get_all_car_response_model.dart';
+import 'package:shaft_rent_app/data/model/response/admin/car/update_car_response.dart';
 import 'package:shaft_rent_app/service/service_http_client.dart';
 import 'package:dartz/dartz.dart';
 
@@ -27,7 +30,7 @@ class CarRepository {
     }
   }
 
-  Future<Either<String, GetCarById>> getCarById(int carId) async {
+  Future<Either<String, GetCarById>> getCarById(String carId) async {
     try {
       final response = await _serviceHttpClient.get('cars/$carId');
       if (response.statusCode == 200) {
@@ -45,12 +48,13 @@ class CarRepository {
     }
   }
 
-  Future<Either<String, void>> addCar(CarRequestModel request) async {
+  Future<Either<String, AddCarModel>> addCar(CarRequestModel request) async {
     try {
       final response = await _serviceHttpClient.post('admin/cars', request.toMap());
-
+      final jsonResponse = json.decode(response.body);
       if (response.statusCode == 201) {
-        return Right(null);
+        final AddCarModel addCarModel = AddCarModel.fromJson(jsonResponse);
+        return Right(addCarModel);
       } else {
         final jsonResponse = json.decode(response.body);
         return Left(jsonResponse['message'] ?? 'Gagal menambahkan mobil.');
@@ -60,15 +64,16 @@ class CarRepository {
     }
   }
 
-  Future<Either<String, void>> updateCar(
+  Future<Either<String, UpdateCarModel>> updateCar(
     int carId,
     CarRequestModel request,
   ) async {
     try {
       final response = await _serviceHttpClient.put('admin/cars/$carId', request.toMap());
-
+      final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
-        return Right(null);
+        final UpdateCarModel updateCarModel = UpdateCarModel.fromJson(jsonResponse);
+        return Right(updateCarModel);
       } else {
         final jsonResponse = json.decode(response.body);
         return Left(jsonResponse['message'] ?? 'Gagal memperbarui mobil.');
@@ -78,12 +83,13 @@ class CarRepository {
     }
   }
 
-  Future<Either<String, void>> deleteCar(int carId) async {
+  Future<Either<String, DeleteCarModel>> deleteCar(int carId) async {
     try {
       final response = await _serviceHttpClient.delete('admin/cars/$carId');
-
+      final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
-        return Right(null);
+        final DeleteCarModel deleteCarModel = DeleteCarModel.fromJson(jsonResponse);
+        return Right(deleteCarModel);
       } else {
         final jsonResponse = json.decode(response.body);
         return Left(jsonResponse['message'] ?? 'Gagal menghapus mobil.');
