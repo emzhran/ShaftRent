@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SpaceHeight(230),
                 Image.asset(
-                  'assets/images/shaft.png',
+                  'assets/images/shaft-logo.png',
                   width: 120,
                   height: 120,
                   fit: BoxFit.contain,
@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Icon(Icons.email, color: AppColors.white),
                   ),
                 ),
+                const SpaceHeight(25),
                 CustomTextField(
                   controller: passwordController,
                   label: 'Password',
@@ -80,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: 'Password tidak boleh kosong',
                   prefixIcon: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.password, color: AppColors.white),
+                    child: Icon(Icons.lock, color: AppColors.white),
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
