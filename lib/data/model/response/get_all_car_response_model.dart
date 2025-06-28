@@ -124,7 +124,7 @@ class Car {
     id: json['id'],
     merkMobil: json['merk_mobil'],
     namaMobil: json['nama_mobil'],
-    hargaMobil: json['harga_mobil']?.toDouble(),
+    hargaMobil: double.parse(json['harga_mobil'] as String),
     jumlahMobil: json['jumlah_mobil'],
     jumlahKursi: json['jumlah_kursi'],
     transmisi: json['transmisi'],
