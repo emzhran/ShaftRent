@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent_app/core/components/components.dart';
 import 'package:shaft_rent_app/core/components/spaces.dart';
 import 'package:shaft_rent_app/core/constants/colors.dart';
+import 'package:shaft_rent_app/core/extensions/build_context_ext.dart';
 import 'package:shaft_rent_app/data/model/request/auth/register_request_model.dart';
+import 'package:shaft_rent_app/presentation/auth/login_screen.dart';
 import 'package:shaft_rent_app/presentation/auth/register/register_bloc.dart';
 import 'package:shaft_rent_app/presentation/auth/register/register_event.dart';
 import 'package:shaft_rent_app/presentation/auth/register/register_state.dart';
@@ -54,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 const SpaceHeight(100),
                 Image.asset(
-                  'assets/images/shaft.png',
+                  'assets/images/shaft-logo.png',
                   width: 120,
                   height: 120,
                   fit: BoxFit.contain,
@@ -177,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: const TextStyle(color: AppColors.red, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              
+                              context.push(const LoginScreen());
                             }, 
                           ),
                         ],
