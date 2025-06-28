@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent_app/core/components/spaces.dart';
 import 'package:shaft_rent_app/core/constants/colors.dart';
 import 'package:shaft_rent_app/data/model/response/auth_response_model.dart';
+import 'package:shaft_rent_app/presentation/admin/car/addcar/add_car_bloc.dart';
+import 'package:shaft_rent_app/presentation/admin/car/addcar/add_car_event.dart';
+import 'package:shaft_rent_app/presentation/admin/car/addcar/add_car_state.dart';
+import 'package:shaft_rent_app/presentation/admin/car/widget/car_screen.dart';
 
 class HomepageAdminScreen extends StatefulWidget {
   final User loggedInUser;
@@ -20,11 +25,24 @@ class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
   void initState() {
     super.initState();
     _pages = [
-      const Center(child: Text('car screen')),
+      BlocBuilder<AddCarBloc, AddCarState>(
+        builder: (context, state) {
+          if (state is AddCarLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is AddCarLoaded) {
+            return CarScreen(carsData: state.cars);
+          } else if (state is AddCarError) {
+            return Center(child: Text('Error: ${state.message}'));
+          } else {
+            return const Center(child: Text('Data belum dimuat.'));
+          }
+        },
+      ),
       const Center(child: Text('chat screen')),
       const Center(child: Text('maps screen')),
       const Center(child: Text('profile screen')),
     ];
+    context.read<AddCarBloc>().add(GetCarEvent());
   }
 
   @override
