@@ -20,7 +20,7 @@ class AppColors {
   static const Color green = Color(0xff50C474);
 
   static const Color red = Color(0xffF65151);
-  
+
   static const Color redCustom = Color(0xffFF7664);
 
   static const Color card = Color(0xffE5E5E5);
@@ -32,4 +32,6 @@ class AppColors {
   static const Color subtitle = Color(0xff7890CD);
 
   static const Color stroke = Color(0xffDBDBDB);
+
+  static const Color transparant = Color.fromARGB(0, 0, 0, 0);
 }
