@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shaft_rent_app/data/repository/auth_repository.dart';
+import 'package:shaft_rent_app/data/repository/car_repository.dart';
+import 'package:shaft_rent_app/presentation/admin/car/addcar/add_car_bloc.dart';
+import 'package:shaft_rent_app/presentation/auth/login/login_bloc.dart';
+import 'package:shaft_rent_app/presentation/auth/login_screen.dart';
+import 'package:shaft_rent_app/presentation/auth/register/register_bloc.dart';
+import 'package:shaft_rent_app/service/service_http_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +18,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => RegisterBloc(authRepository: AuthRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => LoginBloc(authRepository: AuthRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => AddCarBloc(carRepository: CarRepository(ServiceHttpClient())))
+      ],
+      child: MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -30,7 +44,9 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginScreen(),
+      debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
