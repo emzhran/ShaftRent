@@ -164,6 +164,26 @@ class _AddCarScreenState extends State<AddCarScreen> {
               borderColor: AppColors.black,
               prefixIcon: const Icon(Icons.directions_car_filled_rounded, color: AppColors.black)
             ),
+            SpaceHeight(16),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                labelText: 'Jenis Transmisi',
+                labelStyle: TextStyle(color: AppColors.black),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              ),
+              value: _selectedTransmisi,
+              hint: const Text('Pilih Transmisi', style: TextStyle(color: AppColors.black)),
+              items: _transmisiOptions.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() => _selectedTransmisi = newValue);
+              },
+            ),
           ],    
         )
       ),
