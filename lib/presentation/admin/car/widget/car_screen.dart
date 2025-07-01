@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/getcar/getcar_event.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_state.dart';
+import 'package:shaft_rent/presentation/admin/car/widget/add_car_screen.dart';
 
 class CarScreen extends StatelessWidget {
   const CarScreen({super.key});
@@ -73,8 +75,14 @@ class CarScreen extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                onPressed: () {
-                  //navigasi ke add car screen (progress)
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AddCarScreen()),
+                  );
+                  if (result == true && context.mounted) {
+                    context.read<GetCarBloc>().add(FetchCars());
+                  }
                 }
               ), 
             ),
