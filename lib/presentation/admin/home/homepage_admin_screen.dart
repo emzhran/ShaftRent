@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 import 'package:shaft_rent/data/model/response/auth_response_model.dart';
+import 'package:shaft_rent/presentation/admin/car/getcar/getcar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/getcar/getcar_event.dart';
+import 'package:shaft_rent/presentation/admin/car/getcar/getcar_state.dart';
+import 'package:shaft_rent/presentation/admin/car/widget/car_screen.dart';
 
 class HomepageAdminScreen extends StatefulWidget {
   final User loggedInUser;
@@ -13,18 +18,59 @@ class HomepageAdminScreen extends StatefulWidget {
 
 class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
   int _currentPage = 0;
+  final PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<GetCarBloc>().add(FetchCars());
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onNavbarTap(int index) {
+    if (_currentPage != index) {
+      setState(() {
+        _currentPage = index;
+      });
+      _pageController.jumpToPage(index);
+      if (index == 0) {
+        Future.delayed(Duration(milliseconds: 200), () {
+          if (mounted) {
+            context.read<GetCarBloc>().add(FetchCars());
+          }
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const Center(child: Text('Car Screen')),
+      BlocBuilder<GetCarBloc, GetCarState>(
+        builder: (context, state) {
+          if (state is GetCarLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is GetCarLoaded) {
+            return CarScreen();
+          } else if (state is GetCarError) {
+            return Center(child: Text('Error memuat data mobil: ${state.message}'));
+          } else {
+            return const Center(child: Text('Memuat data mobil...'));
+          }
+        },
+      ),
       const Center(child: Text('Chat Screen')),
       const Center(child: Text('Maps Screen')), 
       const Center(child: Text('Profile Screen')),
     ];
-
     return Scaffold(
-      backgroundColor: AppColors.primary,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,20 +109,31 @@ class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
             ),
           ),
           Expanded(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
             child: Container(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).padding.bottom,
               ),
               decoration: const BoxDecoration(
                 color: AppColors.card,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
               ),
-              child: pages[_currentPage],
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                  context.read<GetCarBloc>().add(FetchCars());
+                },
+                children: pages,
+              ),
             ),
           ),
+        ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -102,11 +159,7 @@ class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
         currentIndex: _currentPage,
         selectedItemColor: AppColors.white,
         unselectedItemColor: AppColors.white.withOpacity(0.5),
-        onTap: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
+        onTap: _onNavbarTap,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
         showSelectedLabels: true,
