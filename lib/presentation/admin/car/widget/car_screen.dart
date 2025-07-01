@@ -50,6 +50,31 @@ class CarScreen extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(14),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  elevation: 3,
+                ),
+                icon: const Icon(Icons.add_circle_outline),
+                label: Text('Tambah Mobil Baru', 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                onPressed: () {
+                  //navigasi ke add car screen (progress)
+                }
+              ), 
+            ),
+          ),
         ],
       ),
     );
