@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent/core/components/components.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
+import 'package:shaft_rent/data/model/request/auth/login_request_model.dart';
+import 'package:shaft_rent/presentation/auth/login/login_bloc.dart';
+import 'package:shaft_rent/presentation/auth/login/login_event.dart';
+import 'package:shaft_rent/presentation/auth/login/login_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -84,6 +89,66 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.white,
                     ),
                   ),
+                ),
+                const SpaceHeight(30),
+                BlocConsumer<LoginBloc, LoginState>(
+                  listener: (context, state) {
+                    if (state is LoginFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                          backgroundColor: AppColors.red,
+                        ),
+                      );
+                    } else if (state is LoginSuccess) {
+                      final role = state.responseModel.user?.role?.toLowerCase();
+                      if (role == 'admin'){
+                        //navigasi homepage admin (progress)
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.responseModel.message!),
+                          backgroundColor: AppColors.green,
+                          )
+                        );
+                      } else if (role == 'customer'){
+                        //navigasi homepage customer (progress)
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.responseModel.message!),
+                          backgroundColor: AppColors.green,
+                          )
+                        );
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is LoginLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      );
+                    }
+                    return Button.filled(
+                      onPressed: state is LoginLoading
+                          ? null
+                          : () {
+                            if (_key.currentState!.validate()) {
+                              final request = LoginRequestModel(
+                                email: emailController.text, 
+                                password: passwordController.text
+                              );
+                              context.read<LoginBloc>().add(
+                                LoginRequested(requestModel: request)
+                              );
+                            }
+                          }, 
+                      label: 'Masuk',
+                      height: 50,
+                      color: AppColors.white,
+                      textColor: AppColors.primary,
+                      borderRadius: 16,
+                      fontSize: 16,
+                    );
+                  },
                 ),
               ],
             ),
