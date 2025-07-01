@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shaft_rent/core/components/spaces.dart';
+import 'package:shaft_rent/core/constants/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,6 +33,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: AppColors.primary,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _key,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SpaceHeight(230),
+                Image.asset(
+                  'assets/images/shaft-logo.png',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
