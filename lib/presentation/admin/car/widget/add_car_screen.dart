@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaft_rent/core/components/custom_text_field.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 
@@ -140,7 +141,29 @@ class _AddCarScreenState extends State<AddCarScreen> {
                       ),
                     )
               ),
-            )
+            ),
+            SpaceHeight(24),
+            CustomTextField(
+              controller: merkMobilController, 
+              label: 'Merk Mobil',
+              showLabel: false,
+              validator: 'Merk Mobil tidak boleh kosong',
+              textColor: AppColors.black,
+              labelColor: AppColors.black,
+              borderColor: AppColors.black,
+              prefixIcon: const Icon(Icons.airport_shuttle_rounded, color: AppColors.black)
+            ),
+            SpaceHeight(16),
+            CustomTextField(
+              controller: namaMobilController, 
+              label: 'Nama Mobil',
+              showLabel: false,
+              validator: 'Nama Mobil tidak boleh kosong',
+              textColor: AppColors.black,
+              labelColor: AppColors.black,
+              borderColor: AppColors.black,
+              prefixIcon: const Icon(Icons.directions_car_filled_rounded, color: AppColors.black)
+            ),
           ],    
         )
       ),
