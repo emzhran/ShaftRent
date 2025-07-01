@@ -6,6 +6,7 @@ import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 import 'package:shaft_rent/core/extensions/extensions.dart';
 import 'package:shaft_rent/data/model/request/auth/login_request_model.dart';
+import 'package:shaft_rent/presentation/admin/home/homepage_admin_screen.dart';
 import 'package:shaft_rent/presentation/auth/login/login_bloc.dart';
 import 'package:shaft_rent/presentation/auth/login/login_event.dart';
 import 'package:shaft_rent/presentation/auth/login/login_state.dart';
@@ -105,8 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     } else if (state is LoginSuccess) {
                       final role = state.responseModel.user?.role?.toLowerCase();
+                      final user = state.responseModel.user;
                       if (role == 'admin'){
-                        //navigasi homepage admin (progress)
+                        context.pushReplacement(HomepageAdminScreen(loggedInUser: user!));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.responseModel.message!),
                           backgroundColor: AppColors.green,
