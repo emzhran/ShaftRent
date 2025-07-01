@@ -2,10 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaft_rent/core/components/buttons.dart';
 import 'package:shaft_rent/core/components/custom_text_field.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
+import 'package:shaft_rent/data/model/request/admin/car_request_model.dart';
+import 'package:shaft_rent/presentation/admin/car/addcar/addcar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/addcar/addcar_event.dart';
+import 'package:shaft_rent/presentation/admin/car/addcar/addcar_state.dart';
 
 class AddCarScreen extends StatefulWidget {
   const AddCarScreen({super.key});
@@ -219,6 +225,65 @@ class _AddCarScreenState extends State<AddCarScreen> {
               labelColor: AppColors.black,
               keyboardType: TextInputType.number,
               prefixIcon: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.black),
+            ),
+            SpaceHeight(24),
+            BlocConsumer<AddCarBloc, AddCarState>(
+              listener: (context, state) {
+                if (state is AddCarSuccess) {
+                  Navigator.of(context).pop(true);
+                } else if (state is AddCarError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Gagal menambah mobil: ${state.message}"), backgroundColor: AppColors.red),
+                  );
+                }
+              },
+              builder: (context, state) {
+                final isLoading = state is AddCarLoading;
+                return Button.filled(
+                  label: isLoading ? "Menyimpan..." : "Simpan Data Mobil",
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          if (_Key.currentState!.validate()) {
+                            if (_imageFile == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Silakan pilih gambar mobil"), backgroundColor: Colors.red),
+                              );
+                              return;
+                            }
+                            if (_selectedTransmisi == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Silakan pilih jenis transmisi"), backgroundColor: Colors.red),
+                              );
+                              return;
+                            }
+
+                            final base64Image = await _imageFileToBase64(_imageFile);
+                            if (base64Image == null) return;
+
+                            final requestModel = CarRequestModel(
+                              merkMobil: merkMobilController.text.trim(),
+                              namaMobil: namaMobilController.text.trim(),
+                              hargaMobil: double.tryParse(hargaMobilController.text.trim()) ?? 0.0,
+                              jumlahMobil: int.tryParse(jumlahMobilController.text.trim()) ?? 0,
+                              jumlahKursi: int.tryParse(jumlahKursiController.text.trim()) ?? 0,
+                              transmisi: _selectedTransmisi!,
+                              gambarMobil: base64Image,
+                            );
+                            context.read<AddCarBloc>().add(AddCar(requestModel: requestModel));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Silakan lengkapi semua field"), backgroundColor: Colors.red),
+                            );
+                          }
+                        },
+                  color: AppColors.primary,
+                  textColor: AppColors.white,
+                  height: 50,
+                  borderRadius: 12,
+                  fontSize: 16,
+                );
+              },
             ),
           ],    
         )
