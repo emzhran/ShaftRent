@@ -5,11 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaft_rent/core/components/buttons.dart';
 import 'package:shaft_rent/core/components/custom_text_field.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
+import 'package:shaft_rent/data/model/request/admin/car_request_model.dart';
 import 'package:shaft_rent/data/model/response/car_response_model.dart';
 import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_event.dart';
 import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_state.dart';
 
 class UpdateCarScreen extends StatefulWidget {
@@ -229,6 +232,34 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                   textColor: AppColors.black,
                   labelColor: AppColors.black,
                   showLabel: false,
+                ),
+                SpaceHeight(24),
+                Button.filled(
+                  label: isLoaded ? "Menyimpan..." : "Update Mobil",
+                  onPressed: isLoaded
+                      ? null
+                      : () async {
+                          if (_key.currentState!.validate()) {
+                            final base64Image = await _imageFileToBase64(_imageFile);
+                            final requestModel = CarRequestModel(
+                              merkMobil: merkMobilController.text.trim(),
+                              namaMobil: namaMobilController.text.trim(),
+                              hargaMobil: double.tryParse(hargaMobilController.text.trim()) ?? 0,
+                              jumlahMobil: int.tryParse(jumlahMobilController.text.trim()) ?? 0,
+                              jumlahKursi: int.tryParse(jumlahKursiController.text.trim()) ?? 0,
+                              transmisi: _selectedTransmisi ?? '',
+                              gambarMobil: base64Image,
+                            );
+                            context.read<UpdateCarBloc>().add(
+                                  UpdateCar(carId: widget.car.id, requestModel: requestModel),
+                                );
+                          }
+                        },
+                  color: AppColors.primary,
+                  textColor: Colors.white,
+                  height: 50,
+                  borderRadius: 12,
+                  fontSize: 16,
                 ),
               ],
             )
