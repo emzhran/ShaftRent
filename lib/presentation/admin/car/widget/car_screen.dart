@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
+import 'package:shaft_rent/presentation/admin/car/deletecar/deletecar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/deletecar/deletecar_event.dart';
+import 'package:shaft_rent/presentation/admin/car/deletecar/deletecar_state.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_bloc.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_event.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_state.dart';
 import 'package:shaft_rent/presentation/admin/car/widget/add_car_screen.dart';
+import 'package:shaft_rent/presentation/admin/car/widget/update_car_screen.dart';
 
 class CarScreen extends StatelessWidget {
   const CarScreen({super.key});
@@ -162,6 +166,7 @@ class CarScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold
                                 ),
                               ),
+                              const SpaceHeight(5),
                               Text(
                                 '${car.merkMobil} - ${car.transmisi}',
                                 style: const TextStyle(
@@ -169,6 +174,7 @@ class CarScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold
                                 ),
                               ),
+                              const SpaceHeight(5),
                               Text(
                                 'Harga: Rp${car.hargaMobil.toInt()}/hari',
                                 style: const TextStyle(
@@ -176,12 +182,93 @@ class CarScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold
                                 ),
                               ),
+                              const SpaceHeight(5),
                               Text(
                                 'Jumlah: ${car.jumlahMobil} unit'
                               ),
+                              const SpaceHeight(5),
                               Text(
                                 'Kursi: ${car.jumlahKursi}'
-                              )
+                              ),
+                              const SpaceHeight(10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton.icon(
+                                    onPressed: () async {
+                                      final result = await Navigator.push(
+                                        context, 
+                                        MaterialPageRoute(
+                                          builder: (context) => UpdateCarScreen(car: car)
+                                          ),
+                                        );
+                                        if (result == true) {
+                                          context.read<GetCarBloc>().add(FetchCars());
+                                        }
+                                    },
+                                    icon: const Icon(Icons.edit, color: AppColors.primary),
+                                    label: const Text("Edit", style: TextStyle(color: AppColors.primary)),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton.icon(
+                                    icon: const Icon(Icons.delete, color: AppColors.red),
+                                    label: const Text("Hapus", style: TextStyle(color: AppColors.red)),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text("Hapus Mobil"),
+                                          content: const Text("Yakin ingin menghapus mobil ini?"),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text("Batal"),
+                                              onPressed: () => Navigator.of(context).pop(),
+                                            ),
+                                            TextButton(
+                                              child: const Text("Hapus", style: TextStyle(color: AppColors.red)),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (context) {
+                                                    return BlocListener<DeleteCarBloc, DeleteCarState>(
+                                                      listener: (context, state) {
+                                                        if (state is DeleteCarSuccess) {
+                                                          Navigator.of(context).pop(); 
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text("Mobil berhasil dihapus"),
+                                                              backgroundColor: Colors.green,
+                                                            ),
+                                                          );
+                                                          context.read<GetCarBloc>().add(FetchCars());
+                                                        } else if (state is DeleteCarError) {
+                                                          Navigator.of(context).pop();
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              content: Text("Gagal: ${state.message}"),
+                                                              backgroundColor: AppColors.red,
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      child: const Center(
+                                                        child: CircularProgressIndicator(),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                                context.read<DeleteCarBloc>().add(DeleteCar(carId: car.id));
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
