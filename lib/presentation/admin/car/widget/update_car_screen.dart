@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 import 'package:shaft_rent/data/model/response/car_response_model.dart';
+import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_bloc.dart';
+import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_state.dart';
 
 class UpdateCarScreen extends StatefulWidget {
   final Car car;
@@ -101,6 +105,63 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Edit Mobil"),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      backgroundColor: AppColors.card,
+      body: BlocConsumer<UpdateCarBloc, UpdateCarState>(
+        listener: (context, state) {
+          if (state is UpdateCarSuccess) {
+            Navigator.of(context).pop(true);
+          } else if (state is UpdateCarError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message), backgroundColor: AppColors.red)
+            );
+          }
+        },
+        builder: (context, state) {
+          final isLoaded = state is UpdateCarLoaded;
+          return Form(
+            key: _key,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              children: [
+                GestureDetector(
+                  onTap: _showImagePickerDialog,
+                  child: Container(
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(12),
+                      child: _imageFile != null
+                          ? Image.file(_imageFile!, fit: BoxFit.cover, width: double.infinity)
+                          : (widget.car.gambarmobil != null && widget.car.gambarmobil!.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: widget.car.gambarmobil!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50, color: Colors.red),
+                                )
+                              : const Center(
+                                  child: Icon(Icons.image_outlined, size: 50, color: AppColors.grey),
+                                )),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          );
+        }
+      ), 
+    );
   }
 }
