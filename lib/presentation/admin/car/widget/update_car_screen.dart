@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaft_rent/core/components/custom_text_field.dart';
+import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
 import 'package:shaft_rent/data/model/response/car_response_model.dart';
 import 'package:shaft_rent/presentation/admin/car/updatecar/updatecar_bloc.dart';
@@ -156,6 +158,28 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                                 )),
                     ),
                   ),
+                ),
+                const SpaceHeight(24),
+                CustomTextField(
+                  controller: merkMobilController,
+                  label: 'Merk Mobil',
+                  validator: 'Merk mobil tidak boleh kosong',
+                  prefixIcon: const Icon(Icons.directions_car, color: AppColors.black),
+                  borderColor: AppColors.black,
+                  textColor: AppColors.black,
+                  labelColor: AppColors.black,
+                  showLabel: false,
+                ),
+                const SpaceHeight(16),
+                CustomTextField(
+                  controller: namaMobilController,
+                  label: 'Nama Mobil',
+                  validator: 'Nama mobil tidak boleh kosong',
+                  prefixIcon: const Icon(Icons.directions_car_filled, color: AppColors.black),
+                  borderColor: AppColors.black,
+                  textColor: AppColors.black,
+                  labelColor: AppColors.black,
+                  showLabel: false,
                 ),
               ],
             )
