@@ -7,6 +7,10 @@ import 'package:shaft_rent/presentation/admin/car/getcar/getcar_bloc.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_event.dart';
 import 'package:shaft_rent/presentation/admin/car/getcar/getcar_state.dart';
 import 'package:shaft_rent/presentation/admin/car/widget/car_screen.dart';
+import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_bloc.dart';
+import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_event.dart';
+import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_state.dart';
+import 'package:shaft_rent/presentation/admin/maps/widget/maps_screen.dart';
 
 class HomepageAdminScreen extends StatefulWidget {
   final User loggedInUser;
@@ -46,6 +50,12 @@ class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
             context.read<GetCarBloc>().add(FetchCars());
           }
         });
+      } else if (index == 2) {
+        Future.delayed(Duration(milliseconds: 100), () {
+          if(mounted) {
+            context.read<GetMapsBloc>().add(FetchMaps());
+          }
+        });
       }
     }
   }
@@ -67,7 +77,19 @@ class _HomepageAdminScreenState extends State<HomepageAdminScreen> {
         },
       ),
       const Center(child: Text('Chat Screen')),
-      const Center(child: Text('Maps Screen')), 
+      BlocBuilder<GetMapsBloc, GetMapsState>(
+        builder: (context, state) {
+          if (state is GetMapsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is GetMapsLoaded) {
+            return const MapsScreen();
+          } else if (state is GetMapsError) {
+            return Center(child: Text('Gagal memuat data maps: ${state.message}'));
+          } else {
+            return const Center(child: Text('Memuat maps...'));
+          }
+        },
+      ),
       const Center(child: Text('Profile Screen')),
     ];
     return Scaffold(
