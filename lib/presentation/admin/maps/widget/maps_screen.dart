@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaft_rent/core/components/spaces.dart';
 import 'package:shaft_rent/core/constants/colors.dart';
+import 'package:shaft_rent/presentation/admin/maps/deletemaps/deletemaps_bloc.dart';
+import 'package:shaft_rent/presentation/admin/maps/deletemaps/deletemaps_event.dart';
+import 'package:shaft_rent/presentation/admin/maps/deletemaps/deletemaps_state.dart';
 import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_bloc.dart';
+import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_event.dart';
 import 'package:shaft_rent/presentation/admin/maps/getmaps/getmaps_state.dart';
+import 'package:shaft_rent/presentation/admin/maps/widget/add_maps_screen.dart';
+import 'package:shaft_rent/presentation/admin/maps/widget/detail_maps_screen.dart';
+import 'package:shaft_rent/presentation/admin/maps/widget/update_maps_screen.dart';
 
 class MapsScreen extends StatelessWidget {
   const MapsScreen({super.key});
@@ -69,7 +76,15 @@ class MapsScreen extends StatelessWidget {
                 ),
                 icon: const Icon(Icons.add_location_alt_outlined),
                 label: const Text('Tambah Lokasi Baru', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                onPressed: () {},
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (_) => const AddMapsScreen()),
+                    );
+                    if (result == true && context.mounted){
+                      context.read<GetMapsBloc>().add(FetchMaps());
+                    }
+                },
               ),
             ),
           ),
@@ -102,7 +117,18 @@ class MapsScreen extends StatelessWidget {
                         );
                       }
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (_) => DetailMapsScreen(
+                              namaLokasi: map.namaLokasi, 
+                              latitude: map.latitude, 
+                              longitude: map.longitude
+                              ),
+                            ),
+                          );
+                        },
                         child: Card(
                           margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                           elevation: 4,
@@ -149,13 +175,72 @@ class MapsScreen extends StatelessWidget {
                                     TextButton.icon(
                                       icon: const Icon(Icons.edit, color: AppColors.primary),
                                       label: const Text('Edit', style: TextStyle(color: AppColors.primary)),
-                                      onPressed: () {}), 
+                                      onPressed: () async {
+                                        final result = await Navigator.push(
+                                          context, 
+                                          MaterialPageRoute(builder: (context) => UpdateMapsScreen(map: map)));
+                                          if (result == true) {
+                                            context.read<GetMapsBloc>().add(FetchMaps());
+                                          }
+                                      }), 
                                     const SizedBox(width: 8),
                                     TextButton.icon(
                                       icon: const Icon(Icons.delete, color: AppColors.red),
                                       label: const Text('Hapus', style: TextStyle(color: AppColors.red)),
-                                      onPressed: () {},
-                                    ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text('Hapus Lokasi'),
+                                            content: const Text('Yakin ingin menghapus lokasi ini?'),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('Batal'),
+                                                onPressed: () => Navigator.of(context).pop(),
+                                              ),
+                                              TextButton(
+                                                child: const Text('Hapus', style: TextStyle(color: AppColors.red)),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder: (context) {
+                                                      return BlocListener<DeleteMapsBloc, DeleteMapsState>(
+                                                        listener: (context, state) {
+                                                          if (state is DeleteMapsSuccess) {
+                                                            Navigator.of(context).pop(); 
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              const SnackBar(
+                                                                content: Text('Lokasi berhasil dihapus'),
+                                                                backgroundColor: AppColors.green,
+                                                              ),
+                                                            );
+                                                            context.read<GetMapsBloc>().add(FetchMaps()); 
+                                                          } else if (state is DeleteMapsError) {
+                                                            Navigator.of(context).pop();
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                content: Text("Gagal: ${state.message}"),
+                                                                backgroundColor: AppColors.red,
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                        child: const Center(child: CircularProgressIndicator()),
+                                                      );
+                                                    },
+                                                  );
+
+                                                  context.read<DeleteMapsBloc>().add(DeleteMaps(mapId: map.id));
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    )
+
                                   ],
                                 ),
                               ],
