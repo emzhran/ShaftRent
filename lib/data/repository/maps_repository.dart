@@ -70,9 +70,10 @@ class MapsRepository {
     }
   }
 
-  Future<Either<String, UpdateMapsResponseModel>> updateMap(String id, MapsRequestModel request) async {
+  Future<Either<String, UpdateMapsResponseModel>> updateMap(int mapsId, MapsRequestModel request,
+  ) async {
     try {
-      final response = await _serviceHttpClient.put('admin/maps/$id', request.toMap());
+      final response = await _serviceHttpClient.put('admin/maps/$mapsId', request.toMap());
       final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
         final model = UpdateMapsResponseModel.fromJson(jsonResponse);
@@ -85,9 +86,9 @@ class MapsRepository {
     }
   }
 
-  Future<Either<String, DeleteMapsResponseModel>> deleteMap(String id) async {
+  Future<Either<String, DeleteMapsResponseModel>> deleteMap(int mapId) async {
     try {
-      final response = await _serviceHttpClient.delete('admin/maps/$id');
+      final response = await _serviceHttpClient.delete('admin/maps/$mapId');
       final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
         final model = DeleteMapsResponseModel.fromJson(jsonResponse);
