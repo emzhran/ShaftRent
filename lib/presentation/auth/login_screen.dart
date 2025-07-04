@@ -11,6 +11,7 @@ import 'package:shaft_rent/presentation/auth/login/login_bloc.dart';
 import 'package:shaft_rent/presentation/auth/login/login_event.dart';
 import 'package:shaft_rent/presentation/auth/login/login_state.dart';
 import 'package:shaft_rent/presentation/auth/register_screen.dart';
+import 'package:shaft_rent/presentation/customer/home/homepage_customer_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -116,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         );
                       } else if (role == 'customer'){
-                        //navigasi homepage customer (progress)
+                        context.pushReplacement(HomepageCustomerScreen(loggedInUser: user!));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.responseModel.message!),
                           backgroundColor: AppColors.green,
