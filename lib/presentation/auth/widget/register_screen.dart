@@ -74,6 +74,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Icon(Icons.person, color: AppColors.white)
                   ),
                 ),
+                const SpaceHeight(16),
+                CustomTextField(
+                  controller: emailController, 
+                  label: 'Email',
+                  showLabel: false, 
+                  validator: 'Email tidak boleh kosong',
+                  keyboardType: TextInputType.emailAddress,
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.email, color: AppColors.white)
+                  ),
+                ),
+                const SpaceHeight(16),
+                CustomTextField(
+                  controller: passwordController, 
+                  label: 'Password tidak boleh kosong',
+                  showLabel: false, 
+                  validator: 'Password tidak boleh kosong',
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.lock, color: AppColors.white),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isShowPassword = !isShowPassword;
+                        });
+                      }, 
+                      icon: Icon(
+                        isShowPassword ? Icons.visibility : Icons.visibility_off
+                      ),
+                    ),
+                  ),
               ],
             ),
           )
