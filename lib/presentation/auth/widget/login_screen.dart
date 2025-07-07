@@ -1,13 +1,16 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/constants.dart';
+import 'package:shaftrent/core/extensions/build_context_ext.dart';
 import 'package:shaftrent/data/model/request/auth/login_request_model.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_event.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_state.dart';
+import 'package:shaftrent/presentation/auth/widget/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -141,6 +144,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
+                const SpaceHeight(20),
+                Text.rich(
+                  TextSpan(
+                    text: 'Belum memiliki akun? Silahkan ',
+                    style: TextStyle(
+                      color: AppColors.white,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Daftar disini',
+                        style: TextStyle(
+                          color: AppColors.red,
+                          fontWeight: FontWeight.bold
+                        ),
+                        recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.push(const RegisterScreen());
+                        }
+                      )
+                    ]
+                  )
+                )
               ],
             ),
           ),
