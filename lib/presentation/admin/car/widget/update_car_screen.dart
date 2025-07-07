@@ -177,6 +177,19 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                 labelColor: AppColors.black,
                 showLabel: false,
               ),
+              const SpaceHeight(16),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Jenis Transmisi',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+                value: _selectedTransmisi,
+                items: _transmisiOptions.map((value) {
+                  return DropdownMenuItem(value: value, child: Text(value));
+                }).toList(),
+                onChanged: (value) => setState(() => _selectedTransmisi = value),
+              ),
             ],
           ),
         ),
