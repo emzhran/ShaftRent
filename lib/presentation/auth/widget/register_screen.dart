@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -161,6 +162,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       );
                     }
                   ),
+                  const SpaceHeight(20),
+                  Text.rich(
+                    TextSpan(
+                      text: 'Sudah memiliki akun? Silahkan ',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.03
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Login disini',
+                          style: const TextStyle(color: AppColors.red, fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            //login screen (progres)
+                          }
+                        )
+                      ]
+                    )
+                  )
               ],
             ),
           )
