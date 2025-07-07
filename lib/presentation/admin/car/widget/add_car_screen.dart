@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaftrent/core/components/custom_text_field.dart';
+import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 
 class AddCarScreen extends StatefulWidget {
@@ -95,6 +97,63 @@ class _AddCarScreenState extends State<AddCarScreen> {
     
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tambah Mobil'),
+        centerTitle: true,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () => Navigator.of(context).pop()
+        ), 
+      ),
+      backgroundColor: AppColors.card,
+      body: Form(
+        key: _key,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          children: [
+            GestureDetector(
+              onTap: _showImagePickerDialog,
+              child: Container(
+                height: 180,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.primary)
+                ),
+                child: _imageFile != null
+                    ? ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.file(_imageFile!, fit: BoxFit.cover),
+                    )
+                    : Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_a_photo_outlined, size: 50, color: AppColors.grey),
+                          SpaceHeight(8),
+                          Text('Pilih Gambar Mobil')
+                        ],
+                      ),
+                    )
+              ),
+            ),
+            SpaceHeight(24),
+            CustomTextField(
+              controller: merkMobilController, 
+              label: 'Merk Mobil',
+              showLabel: false,
+              validator: 'Merk Mobil tidak boleh kosong',
+              textColor: AppColors.black,
+              labelColor: AppColors.black,
+              borderColor: AppColors.black,
+              prefixIcon: const Icon(Icons.airport_shuttle_rounded, color: AppColors.black)
+            ),
+          ],
+        )
+      ),
+    );
   }
 }
