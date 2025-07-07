@@ -4,11 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
+import 'package:shaftrent/data/model/request/admin/car_request_model.dart';
 import 'package:shaftrent/data/model/response/car_response_model.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_bloc.dart';
+import 'package:shaftrent/presentation/admin/car/bloc/car_event.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_state.dart';
 
 class UpdateCarScreen extends StatefulWidget {
@@ -226,8 +229,44 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
                 labelColor: AppColors.black,
                 showLabel: false,
               ),
+              const SpaceHeight(16),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(24),
+        child: BlocBuilder<CarBloc, CarState>(
+          builder: (context, state) {
+            final isLoading = state is CarLoading;
+            return Button.filled(
+              label: isLoading ? "Menyimpan..." : "Update Mobil",
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      if (_key.currentState!.validate()) {
+                        final base64Image = await _imageFileToBase64(_imageFile);
+                        final requestModel = CarRequestModel(
+                          merkMobil: merkMobilController.text.trim(),
+                          namaMobil: namaMobilController.text.trim(),
+                          hargaMobil: double.tryParse(hargaMobilController.text.trim()) ?? 0,
+                          jumlahMobil: int.tryParse(jumlahMobilController.text.trim()) ?? 0,
+                          jumlahKursi: int.tryParse(jumlahKursiController.text.trim()) ?? 0,
+                          transmisi: _selectedTransmisi ?? '',
+                          gambarMobil: base64Image,
+                        );
+                        context.read<CarBloc>().add(
+                              UpdateCar(carId: widget.car.id, requestModel: requestModel),
+                            );
+                      }
+                    },
+              color: AppColors.primary,
+              textColor: Colors.white,
+              height: 50,
+              borderRadius: 12,
+              fontSize: 16,
+            );
+          },
         ),
       ),
     );
