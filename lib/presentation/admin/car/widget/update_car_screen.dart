@@ -121,6 +121,41 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
             );
           }
         },
+        child: Form(
+          key: _key,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            children: [
+              GestureDetector(
+                onTap: _showImagePickerDialog,
+                child: Container(
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: _imageFile != null
+                        ? Image.file(_imageFile!, fit: BoxFit.cover, width: double.infinity)
+                        : (widget.car.gambarmobil != null && widget.car.gambarmobil!.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl: widget.car.gambarmobil!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50, color: Colors.red),
+                              )
+                            : const Center(
+                                child: Icon(Icons.image_outlined, size: 50, color: AppColors.grey),
+                              )),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
