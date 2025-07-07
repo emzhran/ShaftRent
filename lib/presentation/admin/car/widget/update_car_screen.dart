@@ -1,0 +1,104 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shaftrent/core/constants/colors.dart';
+import 'package:shaftrent/data/model/response/car_response_model.dart';
+
+class UpdateCarScreen extends StatefulWidget {
+  final Car car;
+  const UpdateCarScreen({super.key, required this.car});
+
+  @override
+  State<UpdateCarScreen> createState() => _UpdateCarScreenState();
+}
+
+class _UpdateCarScreenState extends State<UpdateCarScreen> {
+  final _key = GlobalKey<FormState>();
+  late TextEditingController merkMobilController;
+  late TextEditingController namaMobilController;
+  late TextEditingController jumlahKursiController;
+  late TextEditingController jumlahMobilController;
+  late TextEditingController hargaMobilController;
+  String? _selectedTransmisi;
+  File? _imageFile;
+
+  final List<String> _transmisiOptions = ['Manual', 'Matic'];
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    merkMobilController = TextEditingController(text: widget.car.merkMobil);
+    namaMobilController = TextEditingController(text: widget.car.namaMobil);
+    jumlahKursiController = TextEditingController(text: widget.car.jumlahKursi.toString());
+    jumlahMobilController = TextEditingController(text: widget.car.jumlahMobil.toString());
+    hargaMobilController = TextEditingController(text: widget.car.hargaMobil.toString());
+    _selectedTransmisi = widget.car.transmisi;
+  }
+
+  @override
+  void dispose() {
+    merkMobilController.dispose();
+    namaMobilController.dispose();
+    jumlahKursiController.dispose();
+    jumlahMobilController.dispose();
+    hargaMobilController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source, imageQuality: 70, maxWidth: 800);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  void _showImagePickerDialog() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt_outlined, color: AppColors.primary),
+              title: const Text("Ambil Foto dari Kamera"),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined, color: AppColors.primary),
+              title: const Text("Pilih dari Galeri"),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<String?> _imageFileToBase64(File? imageFile) async {
+    if (imageFile == null) return null;
+    try {
+      List<int> imageBytes = await imageFile.readAsBytes();
+      return base64Encode(imageBytes);
+    } catch (_) {
+      return null;
+      }
+    }
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
