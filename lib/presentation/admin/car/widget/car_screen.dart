@@ -6,6 +6,8 @@ import 'package:shaftrent/core/constants/constants.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_bloc.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_event.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_state.dart';
+import 'package:shaftrent/presentation/admin/car/widget/add_car_screen.dart';
+import 'package:shaftrent/presentation/admin/car/widget/update_car_screen.dart';
 
 class CarScreen extends StatefulWidget {
   const CarScreen({super.key});
@@ -77,7 +79,13 @@ class _CarScreenState extends State<CarScreen> {
                 icon: const Icon(Icons.add_circle_outline),
                 label: const Text('Tambah Mobil Baru', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 onPressed: () async {
-                  //navigasi add car screen
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AddCarScreen()),
+                  );
+                  if (result == true && context.mounted) {
+                    context.read<CarBloc>().add(FetchCars());
+                  }
                 },
               ), 
             ),
@@ -154,7 +162,15 @@ class _CarScreenState extends State<CarScreen> {
                                 children: [
                                   TextButton.icon(
                                     onPressed: () async {
-                                      //navigasi halaman edit
+                                       final result = await Navigator.push(
+                                        context, 
+                                        MaterialPageRoute(
+                                          builder: (context) => UpdateCarScreen(car: car),
+                                        ),
+                                      );
+                                      if (result == true && context.mounted) {
+                                        context.read<CarBloc>().add(FetchCars());
+                                      }
                                     },
                                     icon: const Icon(Icons.edit, color: AppColors.primary),
                                     label: const Text("Edit", style: TextStyle(color: AppColors.primary)),
