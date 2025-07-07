@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/data/model/response/car_response_model.dart';
+import 'package:shaftrent/presentation/admin/car/bloc/car_bloc.dart';
+import 'package:shaftrent/presentation/admin/car/bloc/car_state.dart';
 
 class UpdateCarScreen extends StatefulWidget {
   final Car car;
@@ -99,6 +103,25 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
     }
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Edit Mobil"),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      backgroundColor: AppColors.card,
+      body: BlocListener<CarBloc, CarState>(
+        listener: (context, state) {
+          if (state is CarUpdated) {
+            Navigator.of(context).pop(true);
+          } else if (state is CarError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message), backgroundColor: AppColors.red),
+            );
+          }
+        },
+      ),
+    );
   }
 }
