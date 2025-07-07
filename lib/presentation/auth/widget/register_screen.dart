@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
+import 'package:shaftrent/data/model/request/auth/register_request_model.dart';
+import 'package:shaftrent/presentation/auth/bloc/register/register_bloc.dart';
+import 'package:shaftrent/presentation/auth/bloc/register/register_event.dart';
+import 'package:shaftrent/presentation/auth/bloc/register/register_state.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -106,6 +112,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         isShowPassword ? Icons.visibility : Icons.visibility_off
                       ),
                     ),
+                  ),
+                  const SpaceHeight(30),
+                  BlocConsumer<RegisterBloc, RegisterState>(
+                    listener: (context, state) {
+                      if (state is RegisterSuccess) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                            backgroundColor: AppColors.green
+                          ),
+                        );
+                      } else if (state is RegisterFailure) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.error),
+                            backgroundColor: AppColors.red
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is RegisterLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.white,
+                          ),
+                        );
+                      }
+                      return Button.filled(
+                        onPressed: () {
+                          if (_key.currentState!.validate()) {
+                            final request = RegisterRequestModel(
+                              nama: namaController.text, 
+                              email: emailController.text, 
+                              password: passwordController.text
+                            );
+                            context.read<RegisterBloc>().add(
+                              RegisterSubmitted(requestModel: request)
+                            );
+                          }
+                        },
+                        label: 'Daftar',
+                        color: AppColors.white,
+                        textColor: AppColors.primary,
+                        borderRadius: 16,
+                        fontSize: 16,
+                      );
+                    }
                   ),
               ],
             ),
