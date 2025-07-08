@@ -6,6 +6,9 @@ import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/presentation/admin/maps/bloc/maps_bloc.dart';
 import 'package:shaftrent/presentation/admin/maps/bloc/maps_event.dart';
 import 'package:shaftrent/presentation/admin/maps/bloc/maps_state.dart';
+import 'package:shaftrent/presentation/admin/maps/widget/add_maps_screen.dart';
+import 'package:shaftrent/presentation/admin/maps/widget/detail_maps_screen.dart';
+import 'package:shaftrent/presentation/admin/maps/widget/update_maps_screen.dart';
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen({super.key});
@@ -53,7 +56,13 @@ class _MapsScreenState extends State<MapsScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 onPressed: () async {
-                  // Navigasi ke AddMapsScreen
+                  final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddMapsScreen()),
+                  );
+                  if (result == true && context.mounted) {
+                    context.read<MapsBloc>().add(FetchMaps());
+                  }
                 },
               ),
             ),
@@ -106,7 +115,16 @@ class _MapsScreenState extends State<MapsScreen> {
                         final map = maps[index];
                         return InkWell(
                           onTap: () {
-                            // Navigasi ke DetailMapsScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DetailMapsScreen(
+                                  namaLokasi: map.namaLokasi,
+                                  latitude: map.latitude,
+                                  longitude: map.longitude,
+                                ),
+                              ),
+                            );
                           },
                           child: Card(
                             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
@@ -162,7 +180,10 @@ class _MapsScreenState extends State<MapsScreen> {
                                           style: TextStyle(color: AppColors.primary),
                                         ),
                                         onPressed: () {
-                                          // Navigasi ke UpdateMapsScreen
+                                          Navigator.push(
+                                            context, 
+                                            MaterialPageRoute(builder: (context) => UpdateMapsScreen(map: map))
+                                          );
                                         },
                                       ),
                                       const SizedBox(width: 8),
