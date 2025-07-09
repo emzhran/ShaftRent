@@ -9,7 +9,7 @@
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="@string/google_maps_api_key"/> 
+        android:value="${MAPS_API_KEY}"/> 
         <activity
             android:usesCleartextTraffic="true"
             android:name=".MainActivity"
