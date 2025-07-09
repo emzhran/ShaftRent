@@ -84,6 +84,7 @@ class Profile {
   final String? identitas;
   final String? nomorIdentitas;
   final String? uploadIdentitas;
+  final User? user;
 
   Profile({
     required this.id,
@@ -93,47 +94,52 @@ class Profile {
     required this.identitas,
     required this.nomorIdentitas,
     required this.uploadIdentitas,
+    this.user,
   });
 
-  Profile copyWith({
-    int? id,
-    int? userId,
-    String? nama,
-    String? alamat,
-    String? identitas,
-    String? nomorIdentitas,
-    String? uploadIdentitas,
-  }) => Profile(
-    id: id ?? this.id,
-    userId: userId ?? this.userId,
-    nama: nama ?? this.nama,
-    alamat: alamat ?? this.alamat,
-    identitas: identitas ?? this.identitas,
-    nomorIdentitas: nomorIdentitas ?? this.nomorIdentitas,
-    uploadIdentitas: uploadIdentitas ?? this.uploadIdentitas,
-  );
-
-  factory Profile.fromRawJson(String str) => Profile.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-    id: json['id'],
-    userId: json['user_id'],
-    nama: json['nama'],
-    alamat: json['alamat'],
-    identitas: json['identitas'],
-    nomorIdentitas: json['nomor_identitas'],
-    uploadIdentitas: json['upload_identitas'],
-  );
+        id: json['id'],
+        userId: json['user_id'],
+        nama: json['nama'],
+        alamat: json['alamat'],
+        identitas: json['identitas'],
+        nomorIdentitas: json['nomor_identitas'],
+        uploadIdentitas: json['upload_identitas'],
+        user: json['user'] != null ? User.fromJson(json['user']) : null,
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'user_id': userId,
-    'nama' : nama,
-    'alamat': alamat,
-    'identitas': identitas,
-    'nomor_identitas': nomorIdentitas,
-    'upload_identitas': uploadIdentitas,
-  };
+        'id': id,
+        'user_id': userId,
+        'nama': nama,
+        'alamat': alamat,
+        'identitas': identitas,
+        'nomor_identitas': nomorIdentitas,
+        'upload_identitas': uploadIdentitas,
+        'user': user?.toJson(),
+      };
+}
+
+class User {
+  final int id;
+  final String email;
+  final String? statusAkun;
+
+  User({
+    required this.id,
+    required this.email,
+    this.statusAkun,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json['id'],
+        email: json['email'],
+        statusAkun: json['status_akun'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'email': email,
+        'status_akun': statusAkun,
+      };
 }
