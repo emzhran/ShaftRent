@@ -7,6 +7,7 @@ import 'package:shaftrent/data/model/response/admin/profile_customer_response_mo
 import 'package:shaftrent/presentation/admin/dashboard/customer_profile/bloc/customer_profile_bloc.dart';
 import 'package:shaftrent/presentation/admin/dashboard/customer_profile/bloc/customer_profile_event.dart';
 import 'package:shaftrent/presentation/admin/dashboard/customer_profile/bloc/customer_profile_state.dart';
+import 'package:shaftrent/presentation/admin/dashboard/widget/customer_detail_screen.dart';
 
 class CustomerProfileScreen extends StatefulWidget {
   const CustomerProfileScreen({super.key});
@@ -86,7 +87,12 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                       SnackBar(content: Text(state.message)),
                     );
                   } else if (state is CustomerDetailLoaded) {
-                    //navigasi ke detail profile customer (progress)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CustomerDetailScreen(profile: state.profile),
+                      ),
+                    );
                   }
                 },
                 child: BlocBuilder<CustomerProfileBloc, CustomerProfileState>(
