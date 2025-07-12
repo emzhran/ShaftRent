@@ -32,8 +32,9 @@ class User {
   final String? email;
   final String? role;
   final String? token;
+  final String? statusAkun;
 
-  const User({this.id, this.nama, this.email, this.role, this.token});
+  const User({this.id, this.nama, this.email, this.role, this.token, this.statusAkun});
 
   factory User.fromJson(String str) => User.fromMap(json.decode(str));
 
@@ -45,6 +46,7 @@ class User {
     email: json['email'],
     role: json['role'],
     token: json['token'],
+    statusAkun: json['status_akun']
   );
 
   Map<String, dynamic> toMap() => {
@@ -53,5 +55,6 @@ class User {
     'email': email,
     'role': role,
     'token': token,
+    'status_akun' : statusAkun
   };
 }
