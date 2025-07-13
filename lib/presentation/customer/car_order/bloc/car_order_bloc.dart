@@ -7,7 +7,7 @@ import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_state.d
 
 class CarOrderBloc extends Bloc<CarOrderEvent, CarOrderState> {
   final CarRepository carRepository;
-  final CarOrderRepository carOrderRepository;
+  final OrderCarRepository carOrderRepository;
 
   CarOrderBloc({
     required this.carRepository,

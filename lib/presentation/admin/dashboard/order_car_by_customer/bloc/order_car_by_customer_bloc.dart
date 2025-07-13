@@ -5,7 +5,7 @@ import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/blo
 import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/bloc/order_car_by_customer_state.dart';
 
 class OrderCarByCustomerBloc extends Bloc<OrderCarByCustomerEvent, OrderCarByCustomerState> {
-  final CarOrderRepository orderRepository;
+  final OrderCarRepository orderRepository;
 
   OrderCarByCustomerBloc({required this.orderRepository}) : super(OrderCarByCustomerInitial()) {
     on<FetchAllOrdersByCustomer>(_onFetchAllOrders);

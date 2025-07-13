@@ -7,10 +7,10 @@ import 'package:shaftrent/data/model/response/admin/status_order_update.dart';
 import 'package:shaftrent/data/model/response/customer/order_car_response_model.dart';
 import 'package:shaftrent/service/service_http_client.dart';
 
-class CarOrderRepository {
+class OrderCarRepository {
   final ServiceHttpClient _serviceHttpClient;
 
-  CarOrderRepository(this._serviceHttpClient);
+  OrderCarRepository(this._serviceHttpClient);
 
   Future<Either<String, OrderCarResponseModel>> orderCar(OrderCarRequestModel request) async {
     try {
