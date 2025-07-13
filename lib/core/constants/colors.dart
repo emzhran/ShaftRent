@@ -33,5 +33,7 @@ class AppColors {
 
   static const Color stroke = Color(0xffDBDBDB);
 
+  static const Color blackMenu = Color.fromARGB(255, 16, 14, 14);
+
   static const Color transparant = Color.fromARGB(0, 0, 0, 0);
 }
