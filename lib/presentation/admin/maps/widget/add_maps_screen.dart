@@ -53,7 +53,6 @@ class _AddMapsScreenState extends State<AddMapsScreen> {
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.white,
       ),
-      backgroundColor: AppColors.primary,
       body: Column(
         children: [
           Padding(
