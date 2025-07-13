@@ -48,13 +48,14 @@ class HistoryOrderScreen extends StatelessWidget {
                     break;
                 }
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => DetailHistoryScreen(order: order),
+                        builder: (context) => DetailHistoryScreen(order: order),
                       ),
                     );
+                    context.read<HistoryOrderBloc>().add(GetHistoryOrders());
                   },
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 16),
