@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
@@ -31,6 +32,7 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
   late TextEditingController hargaMobilController;
   String? _selectedTransmisi;
   File? _imageFile;
+  final formatCurrency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
 
   final List<String> _transmisiOptions = ['Manual', 'Matic'];
   final ImagePicker _picker = ImagePicker();
@@ -42,7 +44,9 @@ class _UpdateCarScreenState extends State<UpdateCarScreen> {
     namaMobilController = TextEditingController(text: widget.car.namaMobil);
     jumlahKursiController = TextEditingController(text: widget.car.jumlahKursi.toString());
     jumlahMobilController = TextEditingController(text: widget.car.jumlahMobil.toString());
-    hargaMobilController = TextEditingController(text: widget.car.hargaMobil.toString());
+    hargaMobilController = TextEditingController(text: formatCurrency.format(widget.car.hargaMobil),
+);
+
     _selectedTransmisi = widget.car.transmisi;
   }
 

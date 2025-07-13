@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/data/model/response/auth_response_model.dart';
@@ -22,6 +23,13 @@ class _CarScreenCustomerState extends State<CarScreenCustomer> {
   String selectedTransmisi = 'Semua';
   String selectedHarga = 'Semua';
   bool _isSearching = false;
+
+  final formatCurrency = NumberFormat.currency(
+  locale: 'id_ID',
+  symbol: 'Rp',
+  decimalDigits: 0,
+  );
+
 
   @override
   void initState() {
@@ -250,7 +258,7 @@ class _CarScreenCustomerState extends State<CarScreenCustomer> {
                                 const SpaceHeight(6),
                                 Text('${car.merkMobil} - ${car.transmisi}'),
                                 const SpaceHeight(4),
-                                Text('Harga: Rp${car.hargaMobil.toInt()}/hari'),
+                                Text('Harga: ${formatCurrency.format(car.hargaMobil)}'),
                                 const SpaceHeight(4),
                                 Text('Nomor Kendaraan: ${car.nomorKendaraan}'),
                                 const SpaceHeight(4),

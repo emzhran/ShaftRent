@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/data/model/response/auth_response_model.dart';
@@ -28,6 +29,12 @@ class OrderSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatCurrency = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp',
+    decimalDigits: 0,
+  );
+
     return Scaffold(
       backgroundColor: AppColors.primary,
       appBar: AppBar(
@@ -98,7 +105,7 @@ class OrderSuccessScreen extends StatelessWidget {
             ),
             const SpaceHeight(12),
             const Text('Total Harga', style: TextStyle(fontSize: 18 ,fontWeight: FontWeight.bold)),
-            Text('Rp$totalHarga', style: TextStyle(fontSize: 17)),
+            Text(formatCurrency.format(totalHarga), style: const TextStyle(fontSize: 17)),
             const Spacer(),
             SizedBox(
               width: double.infinity,

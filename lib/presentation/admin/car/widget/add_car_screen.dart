@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
@@ -27,10 +28,20 @@ class _AddCarScreenState extends State<AddCarScreen> {
   final jumlahKursiController = TextEditingController();
   final jumlahMobilController = TextEditingController();
   final hargaMobilController = TextEditingController();
+
   String? _selectedTransmisi;
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
   final List<String> _transmisiOptions = ['Manual', 'Matic'];
+
+  final _currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  bool _isFormatting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    hargaMobilController.addListener(_formatCurrency);
+  }
 
   @override
   void dispose() {
@@ -39,8 +50,30 @@ class _AddCarScreenState extends State<AddCarScreen> {
     nomorKendaraanController.dispose();
     jumlahKursiController.dispose();
     jumlahMobilController.dispose();
+    hargaMobilController.removeListener(_formatCurrency);
     hargaMobilController.dispose();
     super.dispose();
+  }
+
+  void _formatCurrency() {
+    if (_isFormatting) return;
+    _isFormatting = true;
+
+    final digitsOnly = hargaMobilController.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (digitsOnly.isEmpty) {
+      _isFormatting = false;
+      return;
+    }
+
+    final number = int.parse(digitsOnly);
+    final formatted = _currencyFormat.format(number);
+
+    hargaMobilController
+      ..text = formatted
+      ..selection = TextSelection.collapsed(offset: formatted.length);
+
+    _isFormatting = false;
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -90,7 +123,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
     );
   }
 
-   Future<String?> _imageFileToBase64(File? imageFile) async {
+  Future<String?> _imageFileToBase64(File? imageFile) async {
     if (imageFile == null) return null;
     try {
       List<int> imageBytes = await imageFile.readAsBytes();
@@ -102,7 +135,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
       return null;
     }
   }
-    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,9 +145,9 @@ class _AddCarScreenState extends State<AddCarScreen> {
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: () => Navigator.of(context).pop()
-        ), 
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       backgroundColor: AppColors.card,
       body: Form(
@@ -129,63 +162,63 @@ class _AddCarScreenState extends State<AddCarScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.primary)
+                  border: Border.all(color: AppColors.primary),
                 ),
                 child: _imageFile != null
                     ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(_imageFile!, fit: BoxFit.cover),
-                    )
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(_imageFile!, fit: BoxFit.cover),
+                      )
                     : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_a_photo_outlined, size: 50, color: AppColors.grey),
-                          SpaceHeight(8),
-                          Text('Pilih Gambar Mobil')
-                        ],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_a_photo_outlined, size: 50, color: AppColors.grey),
+                            SpaceHeight(8),
+                            const Text('Pilih Gambar Mobil'),
+                          ],
+                        ),
                       ),
-                    )
               ),
             ),
             SpaceHeight(24),
             CustomTextField(
-              controller: merkMobilController, 
+              controller: merkMobilController,
               label: 'Merk Mobil',
               showLabel: false,
               validator: 'Merk Mobil tidak boleh kosong',
               textColor: AppColors.black,
               labelColor: AppColors.black,
               borderColor: AppColors.black,
-              prefixIcon: const Icon(Icons.airport_shuttle_rounded, color: AppColors.black)
+              prefixIcon: const Icon(Icons.airport_shuttle_rounded, color: AppColors.black),
             ),
             SpaceHeight(16),
             CustomTextField(
-              controller: namaMobilController, 
+              controller: namaMobilController,
               label: 'Nama Mobil',
               showLabel: false,
               validator: 'Nama Mobil tidak boleh kosong',
               textColor: AppColors.black,
               labelColor: AppColors.black,
               borderColor: AppColors.black,
-              prefixIcon: const Icon(Icons.directions_car_filled_rounded, color: AppColors.black)
+              prefixIcon: const Icon(Icons.directions_car_filled_rounded, color: AppColors.black),
             ),
             SpaceHeight(16),
             CustomTextField(
-              controller: nomorKendaraanController, 
+              controller: nomorKendaraanController,
               label: 'Nomor Kendaraan',
               showLabel: false,
               validator: 'Nomor Kendaraan tidak boleh kosong',
               textColor: AppColors.black,
               labelColor: AppColors.black,
               borderColor: AppColors.black,
-              prefixIcon: const Icon(Icons.library_books_rounded, color: AppColors.black)
+              prefixIcon: const Icon(Icons.library_books_rounded, color: AppColors.black),
             ),
             SpaceHeight(16),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 labelText: 'Jenis Transmisi',
-                labelStyle: TextStyle(color: AppColors.black),
+                labelStyle: const TextStyle(color: AppColors.black),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
@@ -271,18 +304,25 @@ class _AddCarScreenState extends State<AddCarScreen> {
                               );
                               return;
                             }
+
                             final base64Image = await _imageFileToBase64(_imageFile);
                             if (base64Image == null) return;
+
+                            final harga = double.tryParse(
+                              hargaMobilController.text.replaceAll(RegExp(r'[^0-9]'), ''),
+                            ) ?? 0.0;
+
                             final requestModel = CarRequestModel(
                               merkMobil: merkMobilController.text.trim(),
                               namaMobil: namaMobilController.text.trim(),
                               nomorKendaraan: nomorKendaraanController.text.trim(),
-                              hargaMobil: double.tryParse(hargaMobilController.text.trim()) ?? 0.0,
+                              hargaMobil: harga,
                               jumlahMobil: int.tryParse(jumlahMobilController.text.trim()) ?? 0,
                               jumlahKursi: int.tryParse(jumlahKursiController.text.trim()) ?? 0,
                               transmisi: _selectedTransmisi!,
                               gambarMobil: base64Image,
                             );
+
                             context.read<CarBloc>().add(AddCar(requestModel: requestModel));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -299,7 +339,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
               },
             ),
           ],
-        )
+        ),
       ),
     );
   }

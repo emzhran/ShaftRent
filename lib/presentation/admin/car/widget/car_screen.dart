@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/constants.dart';
 import 'package:shaftrent/presentation/admin/car/bloc/car_bloc.dart';
@@ -14,9 +15,12 @@ class CarScreen extends StatefulWidget {
 
   @override
   State<CarScreen> createState() => _CarScreenState();
+  
 }
 
 class _CarScreenState extends State<CarScreen> {
+  final formatCurrency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +118,7 @@ class _CarScreenState extends State<CarScreen> {
                               const SpaceHeight(5),
                               Text('Nomor Kendaraan: ${car.nomorKendaraan}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               const SpaceHeight(5),
-                              Text('Harga: Rp${car.hargaMobil.toInt()}/hari', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              Text('Harga: ${formatCurrency.format(car.hargaMobil)}/hari', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               const SpaceHeight(5),
                               Text('Jumlah: ${car.jumlahMobil} unit'),
                               const SpaceHeight(5),

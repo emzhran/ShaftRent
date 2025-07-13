@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/data/model/response/auth_response_model.dart';
@@ -32,6 +33,12 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
   String? _metodePembayaran;
   int _totalHari = 0;
   int _totalHarga = 0;
+
+  final formatCurrency = NumberFormat.currency(
+  locale: 'id_ID',
+  symbol: 'Rp',
+  decimalDigits: 0,
+  );
 
   @override
   void dispose() {
@@ -137,7 +144,7 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
               Text(car.transmisi, style: const TextStyle(fontSize: 16)),
               const SpaceHeight(16),
               const Text('Harga:',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primary)),
-              Text('Rp${car.hargaMobil.toInt()}/hari', style: const TextStyle(fontSize: 16)),
+              Text('${formatCurrency.format(car.hargaMobil)}/hari', style: const TextStyle(fontSize: 16)),
               const SpaceHeight(24),
               GestureDetector(
                 onTap: () {
@@ -193,7 +200,7 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
                 const SpaceHeight(8),
                 const Text('Total Harga:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primary)),
-                Text('Rp$_totalHarga', style: const TextStyle(fontSize: 16)),
+                Text(formatCurrency.format(_totalHarga), style: const TextStyle(fontSize: 16)),
                 const SpaceHeight(16),
               ],
               DropdownButtonFormField<String>(
