@@ -6,6 +6,7 @@ import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_bloc.dart';
 import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_event.dart';
 import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_state.dart';
+import 'package:shaftrent/presentation/customer/maps_customer/widget/detail_maps_customer_screen.dart';
 
 class MapsCustomerScreen extends StatefulWidget {
   const MapsCustomerScreen({super.key});
@@ -46,7 +47,12 @@ class _MapsCustomerScreenState extends State<MapsCustomerScreen> {
               final map = maps[index];
               return GestureDetector(
                 onTap: () {
-                  //navigasi detail maps
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DetailMapsCustomerScreen(map: map),
+                    ),
+                  );
                 },
                 child: Card(
                   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
