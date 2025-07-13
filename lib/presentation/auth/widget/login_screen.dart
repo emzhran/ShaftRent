@@ -7,10 +7,12 @@ import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/constants.dart';
 import 'package:shaftrent/core/extensions/build_context_ext.dart';
 import 'package:shaftrent/data/model/request/auth/login_request_model.dart';
+import 'package:shaftrent/presentation/admin/home/homepage_admin_screen.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_bloc.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_event.dart';
 import 'package:shaftrent/presentation/auth/bloc/login/login_state.dart';
 import 'package:shaftrent/presentation/auth/widget/register_screen.dart';
+import 'package:shaftrent/presentation/customer/home/homepage_customer_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -106,10 +108,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     } else if (state is LoginSuccess) {
                       final role = state.responseModel.user?.role?.toLowerCase();
+                      final user = state.responseModel.user;
                       if (role == 'admin'){
-                        //navigasi homepage admin (progress)
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomepageAdminScreen(loggedInUser: user!),
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.responseModel.message!),
+                          backgroundColor: AppColors.green,
+                          )
+                        );
                       } else if (role == 'customer'){
-                        //navigasi homepage customer (progress)
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomepageCustomerScreen(loggedInUser: user!),
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.responseModel.message!),
+                          backgroundColor: AppColors.green,
+                          )
+                        );
                       }
                     }
                   },

@@ -1,4 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shaftrent/data/repository/auth_repository.dart';
+import 'package:shaftrent/data/repository/car_repository.dart';
+import 'package:shaftrent/data/repository/history_order_repository.dart';
+import 'package:shaftrent/data/repository/maps_repository.dart';
+import 'package:shaftrent/data/repository/message_repository.dart';
+import 'package:shaftrent/data/repository/order_car_repository.dart';
+import 'package:shaftrent/data/repository/profile_repository.dart';
+import 'package:shaftrent/presentation/admin/car/bloc/car_bloc.dart';
+import 'package:shaftrent/presentation/admin/dashboard/customer_profile/bloc/customer_profile_bloc.dart';
+import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/bloc/order_car_by_customer_bloc.dart';
+import 'package:shaftrent/presentation/admin/maps/bloc/maps_bloc.dart';
+import 'package:shaftrent/presentation/admin/message/bloc/message_admin_bloc.dart';
+import 'package:shaftrent/presentation/auth/bloc/login/login_bloc.dart';
+import 'package:shaftrent/presentation/auth/bloc/register/register_bloc.dart';
+import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_bloc.dart';
+import 'package:shaftrent/presentation/customer/dashboard/message_customer/bloc/message_customer_bloc.dart';
+import 'package:shaftrent/presentation/customer/dashboard/profile/bloc/profile_bloc.dart';
+import 'package:shaftrent/presentation/customer/history_order/bloc/history_order_bloc.dart';
+import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_bloc.dart';
+import 'package:shaftrent/presentation/no_auth/car/bloc/car_no_auth_bloc.dart';
+import 'package:shaftrent/presentation/no_auth/homepage_screen.dart';
+import 'package:shaftrent/presentation/no_auth/maps/bloc/maps_no_auth_bloc.dart';
+import 'package:shaftrent/service/service_http_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +34,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => RegisterBloc(authRepository: AuthRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => LoginBloc(authRepository: AuthRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => CarBloc(carRepository: CarRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => MapsBloc(mapsRepository: MapsRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => ProfileBloc(profileRepository: ProfileRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => CustomerProfileBloc(customerRepository: ProfileRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => CarOrderBloc(carRepository: CarRepository(ServiceHttpClient()), carOrderRepository: OrderCarRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => HistoryOrderBloc(historyOrderRepository: HistoryOrderRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => OrderCarByCustomerBloc(orderRepository: OrderCarRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => MessageAdminBloc(messageAdminRepository: MessageRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => MessageCustomerBloc(messageCustomerrepository: MessageRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => MapsCustomerBloc(mapsRepository: MapsRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => CarNoAuthBloc(carRepository: CarRepository(ServiceHttpClient()))),
+        BlocProvider(create: (context) => MapsNoAuthBloc(mapsRepository: MapsRepository(ServiceHttpClient())))
+      ],
+      child: MaterialApp(
+
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -30,7 +72,9 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomepageScreen(),
+      debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

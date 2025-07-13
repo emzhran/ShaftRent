@@ -1,15 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaftrent/core/components/buttons.dart';
 import 'package:shaftrent/core/components/custom_text_field.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
+import 'package:shaftrent/core/extensions/build_context_ext.dart';
 import 'package:shaftrent/data/model/request/auth/register_request_model.dart';
 import 'package:shaftrent/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:shaftrent/presentation/auth/bloc/register/register_event.dart';
 import 'package:shaftrent/presentation/auth/bloc/register/register_state.dart';
+import 'package:shaftrent/presentation/auth/widget/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -22,10 +23,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late final TextEditingController namaController;
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
-    bool isShowPassword = false;
   late final GlobalKey<FormState> _key;
+  bool isShowPassword = false;
+  bool _hasNavigated = false;
 
- @override
+  @override
   void initState() {
     namaController = TextEditingController();
     emailController = TextEditingController();
@@ -66,125 +68,138 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'DAFTAR AKUN BARU',
                   style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.05,
-                    color: AppColors.white
+                    color: AppColors.white,
                   ),
                 ),
                 const SpaceHeight(30),
                 CustomTextField(
-                  controller: namaController, 
+                  controller: namaController,
                   label: 'Nama',
-                  showLabel: false, 
+                  showLabel: false,
                   validator: 'Nama tidak boleh kosong',
                   keyboardType: TextInputType.text,
                   prefixIcon: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.person, color: AppColors.white)
+                    child: Icon(Icons.person, color: AppColors.white),
                   ),
                 ),
                 const SpaceHeight(16),
                 CustomTextField(
-                  controller: emailController, 
+                  controller: emailController,
                   label: 'Email',
-                  showLabel: false, 
+                  showLabel: false,
                   validator: 'Email tidak boleh kosong',
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.email, color: AppColors.white)
+                    child: Icon(Icons.email, color: AppColors.white),
                   ),
                 ),
                 const SpaceHeight(16),
                 CustomTextField(
-                  controller: passwordController, 
-                  label: 'Password tidak boleh kosong',
-                  showLabel: false, 
+                  controller: passwordController,
+                  label: 'Password',
+                  showLabel: false,
                   validator: 'Password tidak boleh kosong',
+                  obscureText: !isShowPassword,
                   prefixIcon: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(Icons.lock, color: AppColors.white),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isShowPassword = !isShowPassword;
-                        });
-                      }, 
-                      icon: Icon(
-                        isShowPassword ? Icons.visibility : Icons.visibility_off
-                      ),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isShowPassword = !isShowPassword;
+                      });
+                    },
+                    icon: Icon(
+                      isShowPassword ? Icons.visibility : Icons.visibility_off,
+                      color: AppColors.white,
                     ),
                   ),
-                  const SpaceHeight(30),
-                  BlocConsumer<RegisterBloc, RegisterState>(
-                    listener: (context, state) {
-                      if (state is RegisterSuccess) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            backgroundColor: AppColors.green
+                ),
+                const SpaceHeight(30),
+                BlocConsumer<RegisterBloc, RegisterState>(
+                  listener: (context, state) {
+                    if (state is RegisterSuccess && !_hasNavigated) {
+                      _hasNavigated = true;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: AppColors.green,
+                        ),
+                      );
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
                           ),
                         );
-                      } else if (state is RegisterFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.error),
-                            backgroundColor: AppColors.red
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is RegisterLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.white,
-                          ),
-                        );
-                      }
-                      return Button.filled(
-                        onPressed: () {
-                          if (_key.currentState!.validate()) {
-                            final request = RegisterRequestModel(
-                              nama: namaController.text, 
-                              email: emailController.text, 
-                              password: passwordController.text
-                            );
-                            context.read<RegisterBloc>().add(
-                              RegisterSubmitted(requestModel: request)
-                            );
-                          }
-                        },
-                        label: 'Daftar',
-                        color: AppColors.white,
-                        textColor: AppColors.primary,
-                        borderRadius: 16,
-                        fontSize: 16,
+                      });
+                    } else if (state is RegisterFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                          backgroundColor: AppColors.red,
+                        ),
                       );
                     }
-                  ),
-                  const SpaceHeight(20),
-                  Text.rich(
-                    TextSpan(
-                      text: 'Sudah memiliki akun? Silahkan ',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: MediaQuery.of(context).size.width * 0.03
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Login disini',
-                          style: const TextStyle(color: AppColors.red, fontWeight: FontWeight.bold),
-                          recognizer: TapGestureRecognizer()
+                  },
+                  builder: (context, state) {
+                    if (state is RegisterLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      );
+                    }
+                    return Button.filled(
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          final request = RegisterRequestModel(
+                            nama: namaController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                          context.read<RegisterBloc>().add(
+                                RegisterSubmitted(requestModel: request),
+                              );
+                        }
+                      },
+                      label: 'Daftar',
+                      color: AppColors.white,
+                      textColor: AppColors.primary,
+                      borderRadius: 16,
+                      fontSize: 16,
+                    );
+                  },
+                ),
+                const SpaceHeight(20),
+                Text.rich(
+                  TextSpan(
+                    text: 'Sudah memiliki akun? Silahkan ',
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Login disini',
+                        style: const TextStyle(
+                          color: AppColors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            //login screen (progres)
-                          }
-                        )
-                      ]
-                    )
-                  )
+                            context.push(const LoginScreen());
+                          },
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ),
       ),
     );
