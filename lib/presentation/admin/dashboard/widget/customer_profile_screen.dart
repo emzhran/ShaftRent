@@ -92,7 +92,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                       MaterialPageRoute(
                         builder: (_) => CustomerDetailScreen(profile: state.profile),
                       ),
-                    );
+                    ).then((_) {
+                      context.read<CustomerProfileBloc>().add(FetchAllCustomer());
+                    });
                   }
                 },
                 child: BlocBuilder<CustomerProfileBloc, CustomerProfileState>(

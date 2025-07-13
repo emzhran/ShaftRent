@@ -5,6 +5,7 @@ import 'package:shaftrent/data/model/response/message_response_model.dart';
 import 'package:shaftrent/presentation/admin/message/bloc/message_admin_bloc.dart';
 import 'package:shaftrent/presentation/admin/message/bloc/message_admin_event.dart';
 import 'package:shaftrent/presentation/admin/message/bloc/message_admin_state.dart';
+import 'package:shaftrent/presentation/admin/message/widget/message_admin_chat_screen.dart';
 
 class MessageAdminScreen extends StatefulWidget {
   const MessageAdminScreen({super.key});
@@ -67,7 +68,16 @@ class _MessageAdminScreenState extends State<MessageAdminScreen> {
                     title: Text(name),
                     subtitle: Text(lastMessage.pesan),
                     onTap: () {
-                      //navigasi ke chat message admin chat screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MessageAdminChatScreen(
+                            customerId: entry.key,
+                            customerName: name,
+                            allMessages: messages,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 );

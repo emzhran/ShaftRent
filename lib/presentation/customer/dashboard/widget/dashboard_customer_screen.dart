@@ -7,6 +7,7 @@ import 'package:shaftrent/presentation/customer/dashboard/profile/bloc/profile_b
 import 'package:shaftrent/presentation/customer/dashboard/profile/bloc/profile_event.dart';
 import 'package:shaftrent/presentation/customer/dashboard/profile/bloc/profile_state.dart';
 import 'package:shaftrent/presentation/customer/dashboard/widget/add_profile_screen.dart';
+import 'package:shaftrent/presentation/customer/dashboard/widget/message_customer_screen.dart';
 
 class DashboardCustomerScreen extends StatefulWidget {
   const DashboardCustomerScreen({super.key});
@@ -144,27 +145,12 @@ class _DashboardCustomerScreenState extends State<DashboardCustomerScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        leading: Icon(Icons.lock_outline, color: AppColors.primary),
-                        title: Text('Ganti Password', style: TextStyle(fontSize: 16)),
-                        onTap: () {
-                          //navigasi halaman ganti password (progress)
-                        },
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
                         leading: Icon(Icons.chat_outlined, color: AppColors.primary),
                         title: Text('Chat dengan Admin', style: TextStyle(fontSize: 16)),
                         onTap: () {
-                           //navigasi halaman chat admin (progress)
+                           Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (_) => MessageCustomerScreen()));
                         },
                       ),
                     ),

@@ -137,45 +137,49 @@ class _AddProfileScreenState extends State<AddProfileScreen> {
             children: [
               GestureDetector(
                 onTap: _showImagePickerDialog,
-                child: Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.4),
+                child: Center(
+                  child: Container(
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.primary.withOpacity(0.4),
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: _imageFile != null
-                        ? Image.file(
-                            _imageFile!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
-                        : (widget.profile?.uploadIdentitas != null &&
-                              widget.profile!.uploadIdentitas!.isNotEmpty)
-                        ? CachedNetworkImage(
-                            imageUrl: widget.profile!.uploadIdentitas!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => const Icon(
-                              Icons.broken_image,
-                              size: 50,
-                              color: Colors.red,
-                            ),
-                          )
-                        : const Center(
-                            child: Icon(
-                              Icons.add_a_photo_outlined,
-                              size: 50,
-                              color: AppColors.grey,
-                            ),
-                          ),
+                    child: ClipOval(
+                      child: _imageFile != null
+                          ? Image.file(
+                              _imageFile!,
+                              fit: BoxFit.cover,
+                              width: 150,
+                              height: 150,
+                            )
+                          : (widget.profile?.uploadIdentitas != null &&
+                                  widget.profile!.uploadIdentitas!.isNotEmpty)
+                              ? CachedNetworkImage(
+                                  imageUrl: widget.profile!.uploadIdentitas!,
+                                  fit: BoxFit.cover,
+                                  width: 150,
+                                  height: 150,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) => const Icon(
+                                    Icons.broken_image,
+                                    size: 50,
+                                    color: AppColors.red,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Icon(
+                                    Icons.add_a_photo_outlined,
+                                    size: 50,
+                                    color: AppColors.grey,
+                                  ),
+                                ),
+                    ),
                   ),
                 ),
               ),

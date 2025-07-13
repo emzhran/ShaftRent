@@ -4,6 +4,7 @@ import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/bloc/order_car_by_customer_bloc.dart';
 import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/bloc/order_car_by_customer_event.dart';
 import 'package:shaftrent/presentation/admin/dashboard/order_car_by_customer/bloc/order_car_by_customer_state.dart';
+import 'package:shaftrent/presentation/admin/dashboard/widget/detail_pending_order_screen.dart';
 
 class PendingOrderScreen extends StatefulWidget {
   const PendingOrderScreen({super.key});
@@ -59,7 +60,12 @@ class _PendingOrderScreenState extends State<PendingOrderScreen> {
                 final order = pendingOrders[index];
                 return GestureDetector(
                   onTap: () {
-                    //navigasi ke detail pending order
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailPendingOrderScreen(order: order),
+                      ),
+                    );
                   },
                   child: Card(
                     margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
