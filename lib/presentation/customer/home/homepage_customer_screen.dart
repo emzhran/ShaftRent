@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/data/model/response/auth_response_model.dart';
 import 'package:shaftrent/presentation/auth/widget/login_screen.dart';
+import 'package:shaftrent/presentation/customer/car_order/widget/car_screen_customer.dart';
+import 'package:shaftrent/presentation/customer/dashboard/widget/dashboard_customer_screen.dart';
+import 'package:shaftrent/presentation/customer/history_order/widget/history_order_screen.dart';
+import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_bloc.dart';
+import 'package:shaftrent/presentation/customer/maps_customer/bloc/maps_customer_event.dart';
+import 'package:shaftrent/presentation/customer/maps_customer/widget/maps_customer_screen.dart';
 
 class HomepageCustomerScreen extends StatefulWidget {
   final User loggedInUser;
@@ -15,11 +22,7 @@ class HomepageCustomerScreen extends StatefulWidget {
 class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
   int _currentPage = 0;
   final PageController _pageController = PageController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  bool isDarkMode = false;
 
   @override
   void dispose() {
@@ -33,16 +36,23 @@ class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
         _currentPage = index;
       });
       _pageController.jumpToPage(index);
+      if (index == 2) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            context.read<MapsCustomerBloc>().add(GetMaps());
+          }
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const Center(child: Text('Car Order Screen')),
-      const Center(child: Text('Riwayat Screen')),
-      const Center(child: Text('Maps Screen')),
-      const Center(child: Text('Dashboard Screen'))
+      CarScreenCustomer(loggedInUser: widget.loggedInUser),
+      const HistoryOrderScreen(),
+      const MapsCustomerScreen(),
+      const DashboardCustomerScreen(),
     ];
     return Scaffold(
       body: Column(
@@ -56,7 +66,9 @@ class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
               bottom: 18,
             ),
             width: double.infinity,
-            decoration: const BoxDecoration(color: AppColors.primary),
+            decoration: BoxDecoration(
+              color: isDarkMode ? AppColors.blackMenu : AppColors.primary,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -77,20 +89,36 @@ class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
                         child: Text(
                           'Selamat Datang, ${widget.loggedInUser.nama}',
                           style: const TextStyle(
-                            color: AppColors.white,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.logout_outlined, color: AppColors.white),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context, 
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
-                        },
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              isDarkMode ? Icons.wb_sunny_outlined : Icons.nightlight_round_outlined,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isDarkMode = !isDarkMode;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.logout_outlined, color: Colors.white),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -105,18 +133,16 @@ class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
                 topRight: Radius.circular(30),
               ),
               child: Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom,
-                ),
-                decoration: const BoxDecoration(
-                  color: AppColors.card,
-                ),
+                color: isDarkMode ? AppColors.blackMenu : AppColors.card,
                 child: PageView(
                   controller: _pageController,
                   onPageChanged: (index) {
                     setState(() {
                       _currentPage = index;
                     });
+                    if (index == 2) {
+                      context.read<MapsCustomerBloc>().add(GetMaps());
+                    }
                   },
                   children: pages,
                 ),
@@ -126,16 +152,16 @@ class _HomepageCustomerScreenState extends State<HomepageCustomerScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.primary,
+        backgroundColor: isDarkMode ? AppColors.blackMenu : AppColors.primary,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.directions_car_filled_outlined), label: 'Mobil'),
           BottomNavigationBarItem(icon: Icon(Icons.history_outlined), label: 'Riwayat'),
           BottomNavigationBarItem(icon: Icon(Icons.map_outlined), label: 'Maps'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profil'),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard_outlined), label: 'Dashboard'),
         ],
         currentIndex: _currentPage,
-        selectedItemColor: AppColors.white,
-        unselectedItemColor: AppColors.white.withOpacity(0.5),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white.withOpacity(0.5),
         onTap: _onNavbarTap,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
