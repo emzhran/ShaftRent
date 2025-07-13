@@ -14,7 +14,6 @@ class CarBloc extends Bloc<CarEvent, CarState> {
   }
 
   Future<void> _onFetchCars(FetchCars event, Emitter<CarState> emit) async {
-    emit(CarLoading());
     final result = await carRepository.getCars();
     result.fold(
       (error) => emit(CarError(message: error)),

@@ -151,6 +151,8 @@ class _CarScreenState extends State<CarScreen> {
                               const SpaceHeight(5),
                               Text('${car.merkMobil} - ${car.transmisi}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               const SpaceHeight(5),
+                              Text('Nomor Kendaraan: ${car.nomorKendaraan}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                              const SpaceHeight(5),
                               Text('Harga: Rp${car.hargaMobil.toInt()}/hari', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               const SpaceHeight(5),
                               Text('Jumlah: ${car.jumlahMobil} unit'),

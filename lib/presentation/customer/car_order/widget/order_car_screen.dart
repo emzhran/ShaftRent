@@ -130,6 +130,8 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
               const SpaceHeight(16),
               const Text('Nama Mobil:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primary)),
               Text(car.namaMobil, style: const TextStyle(fontSize: 16)),
+              const Text('Nomor Kendaraan:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primary)),
+              Text(car.namaMobil, style: const TextStyle(fontSize: 16)),
               const SpaceHeight(16),
               const Text('Transmisi:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primary)),
               Text(car.transmisi, style: const TextStyle(fontSize: 16)),
@@ -258,6 +260,7 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
                       builder: (_) => OrderSuccessScreen(
                         namaPemesan: user.nama ?? '-',
                         namaMobil: car.namaMobil,
+                        nomorKendaraan: car.nomorKendaraan,
                         tanggalMulai: _tanggalMulaiController.text,
                         tanggalSelesai: _tanggalSelesaiController.text,
                         metodePembayaran: _metodePembayaran!,

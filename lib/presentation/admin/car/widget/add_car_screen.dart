@@ -23,6 +23,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
   final _key = GlobalKey<FormState>();
   final merkMobilController = TextEditingController();
   final namaMobilController = TextEditingController();
+  final nomorKendaraanController = TextEditingController();
   final jumlahKursiController = TextEditingController();
   final jumlahMobilController = TextEditingController();
   final hargaMobilController = TextEditingController();
@@ -35,6 +36,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
   void dispose() {
     merkMobilController.dispose();
     namaMobilController.dispose();
+    nomorKendaraanController.dispose();
     jumlahKursiController.dispose();
     jumlahMobilController.dispose();
     hargaMobilController.dispose();
@@ -169,6 +171,17 @@ class _AddCarScreenState extends State<AddCarScreen> {
               prefixIcon: const Icon(Icons.directions_car_filled_rounded, color: AppColors.black)
             ),
             SpaceHeight(16),
+            CustomTextField(
+              controller: nomorKendaraanController, 
+              label: 'Nomor Kendaraan',
+              showLabel: false,
+              validator: 'Nomor Kendaraan tidak boleh kosong',
+              textColor: AppColors.black,
+              labelColor: AppColors.black,
+              borderColor: AppColors.black,
+              prefixIcon: const Icon(Icons.library_books_rounded, color: AppColors.black)
+            ),
+            SpaceHeight(16),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 labelText: 'Jenis Transmisi',
@@ -224,6 +237,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
               keyboardType: TextInputType.number,
               prefixIcon: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.black),
             ),
+            SpaceHeight(20),
             BlocConsumer<CarBloc, CarState>(
               listener: (context, state) {
                 if (state is CarListLoaded) {
@@ -262,6 +276,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                             final requestModel = CarRequestModel(
                               merkMobil: merkMobilController.text.trim(),
                               namaMobil: namaMobilController.text.trim(),
+                              nomorKendaraan: nomorKendaraanController.text.trim(),
                               hargaMobil: double.tryParse(hargaMobilController.text.trim()) ?? 0.0,
                               jumlahMobil: int.tryParse(jumlahMobilController.text.trim()) ?? 0,
                               jumlahKursi: int.tryParse(jumlahKursiController.text.trim()) ?? 0,

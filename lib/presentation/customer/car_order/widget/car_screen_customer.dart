@@ -252,6 +252,8 @@ class _CarScreenCustomerState extends State<CarScreenCustomer> {
                                 const SpaceHeight(4),
                                 Text('Harga: Rp${car.hargaMobil.toInt()}/hari'),
                                 const SpaceHeight(4),
+                                Text('Nomor Kendaraan: ${car.nomorKendaraan}'),
+                                const SpaceHeight(4),
                                 Text('Jumlah: ${car.jumlahMobil} unit'),
                                 const SpaceHeight(4),
                                 Text('Kapasitas: ${car.jumlahKursi} kursi'),

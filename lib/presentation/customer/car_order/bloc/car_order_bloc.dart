@@ -26,7 +26,6 @@ class CarOrderBloc extends Bloc<CarOrderEvent, CarOrderState> {
     FetchCarsCustomer event,
     Emitter<CarOrderState> emit,
   ) async {
-    emit(CarOrderLoading());
     final result = await carRepository.getCars();
     result.fold(
       (error) => emit(CarOrderError(error: error)),

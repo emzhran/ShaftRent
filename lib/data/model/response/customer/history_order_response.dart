@@ -34,6 +34,7 @@ class Car {
   final int id;
   final String merkMobil;
   final String namaMobil;
+  final String nomorKendaraan;
   final String? transmisi;
   final String? gambarMobil;
 
@@ -41,6 +42,7 @@ class Car {
     required this.id,
     required this.merkMobil,
     required this.namaMobil,
+    required this.nomorKendaraan,
     required this.transmisi,
     this.gambarMobil,
   });
@@ -50,6 +52,7 @@ class Car {
       id: json['id'],
       merkMobil: json['merk_mobil'],
       namaMobil: json['nama_mobil'],
+      nomorKendaraan: json['nomor_kendaraan'],
       transmisi: json['transmisi'],
       gambarMobil: json['gambar_mobil'],
     );

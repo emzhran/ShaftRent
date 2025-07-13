@@ -8,6 +8,7 @@ class OrderSuccessScreen extends StatelessWidget {
   final User user;
   final String namaPemesan;
   final String namaMobil;
+  final String nomorKendaraan;
   final String tanggalMulai;
   final String tanggalSelesai;
   final String metodePembayaran;
@@ -18,6 +19,7 @@ class OrderSuccessScreen extends StatelessWidget {
     required this.user,
     required this.namaPemesan,
     required this.namaMobil,
+    required this.nomorKendaraan,
     required this.tanggalMulai,
     required this.tanggalSelesai,
     required this.metodePembayaran,
@@ -69,6 +71,9 @@ class OrderSuccessScreen extends StatelessWidget {
             const SpaceHeight(16),
             const Text('Nama Mobil', style: TextStyle(fontSize: 18 , fontWeight: FontWeight.bold)),
             Text(namaMobil, style: TextStyle(fontSize: 17)),
+            const SpaceHeight(12),
+            const Text('Nomor Kendaraan', style: TextStyle(fontSize: 18 , fontWeight: FontWeight.bold)),
+            Text(nomorKendaraan, style: TextStyle(fontSize: 17)),
             const SpaceHeight(12),
             const Text('Tanggal Mulai', style: TextStyle(fontSize: 18 , fontWeight: FontWeight.bold)),
             Text(tanggalMulai, style: TextStyle(fontSize: 17)),

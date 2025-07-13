@@ -79,6 +79,7 @@ class Car {
   final int id;
   final String merkMobil;
   final String namaMobil;
+  final String nomorKendaraan;
   final double hargaMobil;
   final int jumlahMobil;
   final int jumlahKursi;
@@ -89,6 +90,7 @@ class Car {
     required this.id,
     required this.merkMobil,
     required this.namaMobil,
+    required this.nomorKendaraan,
     required this.hargaMobil,
     required this.jumlahMobil,
     required this.jumlahKursi,
@@ -100,6 +102,7 @@ class Car {
     int? id,
     String? merkMobil,
     String? namaMobil,
+    String? nomorKendaraan,
     double? hargaMobil,
     int? jumlahMobil,
     int? jumlahKursi,
@@ -109,6 +112,7 @@ class Car {
     id: id ?? this.id,
     merkMobil: merkMobil ?? this.merkMobil,
     namaMobil: namaMobil ?? this.namaMobil,
+    nomorKendaraan: nomorKendaraan ?? this.nomorKendaraan,
     hargaMobil: hargaMobil ?? this.hargaMobil,
     jumlahMobil: jumlahMobil ?? this.jumlahMobil,
     jumlahKursi: jumlahKursi ?? this.jumlahKursi,
@@ -124,6 +128,7 @@ class Car {
     id: json['id'] as int,
     merkMobil: json['merk_mobil'],
     namaMobil: json['nama_mobil'],
+    nomorKendaraan: json['nomor_kendaraan'],
     hargaMobil: (json['harga_mobil'] as num).toDouble(),
     jumlahMobil: json['jumlah_mobil'] as int,
     jumlahKursi: json['jumlah_kursi'] as int,
@@ -135,6 +140,7 @@ class Car {
     'id': id,
     'merk_mobil': merkMobil,
     'nama_mobil': namaMobil,
+    'nomor_kendaraan': nomorKendaraan,
     'harga_mobil': hargaMobil,
     'jumlah_mobil': jumlahMobil,
     'jumlah_kursi': jumlahKursi,
