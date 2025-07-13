@@ -8,6 +8,7 @@ import 'package:shaftrent/data/model/request/customer/order_car_request_model.da
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_bloc.dart';
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_event.dart';
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_state.dart';
+import 'package:shaftrent/presentation/customer/car_order/widget/order_success_screen.dart';
 
 class OrderCarScreen extends StatefulWidget {
   final Car car;
@@ -251,7 +252,20 @@ class _OrderCarScreenState extends State<OrderCarScreen> {
               BlocConsumer<CarOrderBloc, CarOrderState>(
                 listener: (context, state) {
                 if (state is CarOrderSuccess) {
-                  //navigasi ke halaman order success (progress)
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => OrderSuccessScreen(
+                        namaPemesan: user.nama ?? '-',
+                        namaMobil: car.namaMobil,
+                        tanggalMulai: _tanggalMulaiController.text,
+                        tanggalSelesai: _tanggalSelesaiController.text,
+                        metodePembayaran: _metodePembayaran!,
+                        totalHarga: _totalHarga,
+                        user: user,
+                      ),
+                    ),
+                  );
                 } else if (state is CarOrderError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

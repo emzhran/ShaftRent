@@ -7,6 +7,7 @@ import 'package:shaftrent/data/model/response/auth_response_model.dart';
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_bloc.dart';
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_event.dart';
 import 'package:shaftrent/presentation/customer/car_order/bloc/car_order_state.dart';
+import 'package:shaftrent/presentation/customer/car_order/widget/order_car_screen.dart';
 
 class CarScreenCustomer extends StatefulWidget {
   final User loggedInUser;
@@ -261,7 +262,24 @@ class _CarScreenCustomerState extends State<CarScreenCustomer> {
                                     icon: const Icon(Icons.shopping_cart_outlined),
                                     label: const Text('Pesan'),
                                     onPressed: () {
-                                      // navigasi ke halaman order (progress)
+                                      if (widget.loggedInUser.statusAkun?.toLowerCase() != 'terverifikasi') {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Akun Anda belum terverifikasi. Silakan lengkapi data terlebih dahulu.'),
+                                            backgroundColor: AppColors.red,
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => OrderCarScreen(
+                                              car: car,
+                                              loggedInUser: widget.loggedInUser,
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.primary,
