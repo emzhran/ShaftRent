@@ -25,4 +25,29 @@ class HistoryOrderRepository {
       return Left('Terjadi kesalahan saat memuat riwayat pesanan: ${e.toString()}');
     }
   }
+
+  Future<Either<String, String>> submitRating({
+    required int orderId,
+    required int rating,
+  }) async {
+    try {
+      final response = await _serviceHttpClient.put(
+        'customer/orders/$orderId',
+        {
+          'rating': rating,
+        },
+      );
+      final jsonResponse = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return Right(jsonResponse['message'] ?? 'Rating berhasil disimpan');
+      } else {
+        return Left(jsonResponse['message'] ?? 'Gagal menyimpan rating');
+      }
+    } catch (e) {
+      return Left('Terjadi kesalahan saat menyimpan rating: ${e.toString()}');
+    }
+  }
+
+
 }

@@ -6,6 +6,7 @@ class HistoryOrder {
   final DateTime tanggalSelesai;
   final String metodePembayaran;
   final String statusPemesanan;
+  final int? rating;
 
   HistoryOrder({
     required this.id,
@@ -15,6 +16,7 @@ class HistoryOrder {
     required this.tanggalSelesai,
     required this.metodePembayaran,
     required this.statusPemesanan,
+    required this.rating
   });
 
   factory HistoryOrder.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class HistoryOrder {
       tanggalSelesai: DateTime.parse(json['tanggal_selesai']),
       metodePembayaran: json['metode_pembayaran'],
       statusPemesanan: json['status_pemesanan'],
+      rating: json['rating']
     );
   }
 }
@@ -58,4 +61,3 @@ class Car {
     );
   }
 }
-
