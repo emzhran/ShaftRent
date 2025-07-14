@@ -8,7 +8,7 @@
 <img width="1920" height="1080" alt="Purple Pink Gradient Mobile Application Presentation" src="https://github.com/user-attachments/assets/ae540764-c471-4d2e-b70d-d8a270293b63" />
 
 ## Menu Maps Pada Admin
-<img width="1920" height="1080" alt="Purple Pink Gradient Mobile Application Presentation" src="https://github.com/user-attachments/assets/6017820f-6aad-4c57-9e23-591e1bd41367" />
+![Purple Pink Gradient Mobile Application Presentation](https://github.com/user-attachments/assets/30a874ec-5a82-425b-8f28-1c7f6c499340)
 
 ## Menu Dashboard Pada Admin serta Preview DarkMode
 <img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/cc9c2c2f-9c2f-4444-b274-b62880428f28" />
