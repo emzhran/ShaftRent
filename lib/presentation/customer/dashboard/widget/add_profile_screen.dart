@@ -139,16 +139,16 @@ class _AddProfileScreenState extends State<AddProfileScreen> {
                 onTap: _showImagePickerDialog,
                 child: Center(
                   child: Container(
-                    height: 150,
-                    width: 150,
+                    height: 200,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
                       border: Border.all(
                         color: AppColors.primary.withOpacity(0.4),
                         width: 2,
                       ),
                     ),
-                    child: ClipOval(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
                       child: _imageFile != null
                           ? Image.file(
                               _imageFile!,

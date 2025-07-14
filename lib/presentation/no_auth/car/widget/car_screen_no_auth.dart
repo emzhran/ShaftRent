@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shaftrent/core/components/spaces.dart';
 import 'package:shaftrent/core/constants/colors.dart';
 import 'package:shaftrent/presentation/no_auth/car/bloc/car_no_auth_bloc.dart';
@@ -15,6 +16,8 @@ class CarScreenNoAuth extends StatefulWidget {
 }
 
 class _CarScreenNoAuthState extends State<CarScreenNoAuth> {
+  final formatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+
   @override
   void initState() {
     context.read<CarNoAuthBloc>().add(GetCarsNoAuth());
@@ -92,7 +95,7 @@ class _CarScreenNoAuthState extends State<CarScreenNoAuth> {
                               const SpaceHeight(4),
                               Text('Transmisi: ${car.transmisi}'),
                               Text('Nomor Kendaraan: ${car.nomorKendaraan}'),
-                              Text('Harga: ${car.hargaMobil.toInt()}/hari'),
+                              Text('Harga: ${formatter.format(car.hargaMobil)}/hari'),
                               const SpaceHeight(12),
                               SizedBox(
                                 width: double.infinity,
