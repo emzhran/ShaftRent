@@ -1,16 +1,20 @@
-# shaftrent
+## HomePage No Auth serta Login dan Register Screen
+<img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/57b7c2e0-b189-4038-bd30-2c5beeb52eec" />
 
-A new Flutter project.
+## Menu Car Pada Admin
+<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/9387df87-2f6c-480b-bf76-2c19039f1798" />
 
-## Getting Started
+## Menu Message Pada Admin
+<img width="1920" height="1080" alt="Purple Pink Gradient Mobile Application Presentation" src="https://github.com/user-attachments/assets/ae540764-c471-4d2e-b70d-d8a270293b63" />
 
-This project is a starting point for a Flutter application.
+## Menu Maps Pada Admin
+<img width="1920" height="1080" alt="Purple Pink Gradient Mobile Application Presentation" src="https://github.com/user-attachments/assets/6017820f-6aad-4c57-9e23-591e1bd41367" />
 
-A few resources to get you started if this is your first Flutter project:
+## Menu Dashboard Pada Admin serta Preview DarkMode
+<img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/cc9c2c2f-9c2f-4444-b274-b62880428f28" />
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Menu Car Pada Customer
+<img width="1920" height="1080" alt="7" src="https://github.com/user-attachments/assets/ebf3d00b-1c02-4491-8046-deab615e5b20" />
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Menu Detail Order dan Dashboard Pada Customer serta Preview DarkMode
+<img width="1920" height="1080" alt="Purple Pink Gradient Mobile Application Presentation (1)" src="https://github.com/user-attachments/assets/22bb8bbb-6dcb-44ee-b81f-50807d111c2c" />
